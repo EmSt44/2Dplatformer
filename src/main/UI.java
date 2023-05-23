@@ -29,12 +29,11 @@ public class UI extends JPanel {
             //gör inget spelet är inte pausat, uppdatera detta med annan UI senare.
         }
         else if(gp.gameState == gp.pauseState) {
-            System.out.println("pause is drawn");
             drawPause(g2);
         }
     }
 
     public void drawPause(Graphics2D g2) {
-        g2.drawString("Paused", 0, 0);
+        g2.drawString("Paused", gp.player.screenX, gp.player.screenY);
     }
 }
