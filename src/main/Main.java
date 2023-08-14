@@ -11,7 +11,14 @@ public class Main {
         window.setResizable(false);
         window.setTitle("2D Platformer");
 
+        GamePanel gamePanel = new GamePanel();
+        window.add(gamePanel);
+
+        window.pack(); //gör fönstret till rätt storlek för vår panel
+
         window.setLocationRelativeTo(null); //ospecificerad window location = mitten av skärmen.
         window.setVisible(true);
+
+        gamePanel.startGameThread();
     }
 }
