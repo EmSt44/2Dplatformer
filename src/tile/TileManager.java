@@ -3,9 +3,8 @@ package tile;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
@@ -31,10 +30,10 @@ public void getTileImage() { //läser in png filer för varje tile och lägger d
 
 try {
      tile[0] = new Tile();
-     tile[0].image = ImageIO.read(new File("res/tiles/redtile.png"));
+     tile[0].image = ImageIO.read(new File("res/tiles/bluetile.png"));
 
      tile[1] = new Tile();
-     tile[1].image = ImageIO.read(new File("res/tiles/blacktile.png"));
+     tile[1].image = ImageIO.read(new File("res/tiles/redtile.png"));
 
 
     
@@ -49,8 +48,8 @@ public void loadMap() {
 
     try {
 
-    InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    //InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
+    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap"));
     
     //startvärde för läsningen av kartan
     int col = 0;
@@ -87,21 +86,20 @@ public void draw(Graphics2D g2) {
     int x = 0;
     int y = 0;
 
-    int tileNum = mapTileNum[col][row];
-
     while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
 
-        g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(tile[mapTileNum[col][row]].image, x, y, gp.tileSize, gp.tileSize, null);
         col++;
         x += gp.tileSize;
-    }
-    if(col == gp.maxScreenRow) {
-        col = 0;
-        x = 0;
-        row++;
-        y += gp.tileSize;
+
+     if(col == gp.maxScreenCol) {
+         col = 0;
+         x = 0;
+         row++;
+         y += gp.tileSize;
 
     }
+ }
     
 }
 
