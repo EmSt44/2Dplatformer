@@ -19,26 +19,50 @@ public class Player extends Entity{
     public void setDefaultValues() {
 
         x = 100;
-        y = 100;
+        y = 300;    
         speed = 4;
     }
     public void update() {
         if(keyH.upPressed == true) {
-            y -= speed;
+            boolean check = false;
+            y += ((-3) * jumpAnimation) + (1 * animationTime);
+            animationTime++;
+            if(jumpAnimation <= 7 && !check) {
+                jumpAnimation++;
+            }
+            else if(check) {
+                jumpAnimation--;
+            }
+            else if(jumpAnimation == 7) {
+                check = true;
+            }
+            
+            if(y > 500) {
+                //keyH.upPressed = false;
+                y = 100;
+                //animationTime = 0;
+                //jumpAnimation = 0;
+            }
+
+            //y -= speed;
+            /*if(isJumping){
+                verticalVelocity = initialVelocity*sin(angle) - g*animationTime;
+                animationTime += TIME_STEP;
+            }*/
         }
-        else if(keyH.downPressed == true) {
+        if(keyH.downPressed == true) {
             y += speed;
         }
-        else if(keyH.leftPressed == true) {
+        if(keyH.leftPressed == true) {
             x -= speed;
         }
-        else if(keyH.rightPressed == true) {
+        if(keyH.rightPressed == true) {
             x += speed;
         }
     }
     public void draw(Graphics2D g2) {
         g2.setColor(Color.white);
 
-        g2.fillRect(x, y, gp.tileSize, gp.tileSize);
+        g2.fillRect((int)x, (int)y, gp.tileSize, gp.tileSize);
     }
 }

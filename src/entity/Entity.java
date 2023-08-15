@@ -2,6 +2,8 @@ package entity;
 
 public class Entity{
 
-    public int x, y;
+    public double x, y;
     public int speed;
+    public int animationTime = 0;
+    public int jumpAnimation = 1;
 }
