@@ -32,6 +32,7 @@ public class Player extends Entity{
         /*Edit out later
         worldX = g
         x = 100;
+        y = 300;    
         y = 100;
         speed = 4;p.tileSize * //starting tile for X
         worldY = gp.tileSize * //starting tile for Y
@@ -57,23 +58,43 @@ public class Player extends Entity{
 
     public void update() {
         if(keyH.upPressed == true) {
-            worldY -= speed;
+            boolean check = false;
+            y += ((-3) * jumpAnimation) + (1 * animationTime);
+            animationTime++;
+            if(jumpAnimation <= 7 && !check) {
+                jumpAnimation++;
+            }
+            else if(check) {
+                jumpAnimation--;
+            }
+            else if(jumpAnimation == 7) {
+                check = true;
+            }
+            
+            if(y > 500) {
+                //keyH.upPressed = false;
+                y = 100;
+                //animationTime = 0;
+                //jumpAnimation = 0;
+            }
+
+            //y -= speed;
+            /*if(isJumping){
+                verticalVelocity = initialVelocity*sin(angle) - g*animationTime;
+                animationTime += TIME_STEP;
+            }*/
         }
-        else if(keyH.downPressed == true) {
-            worldY += speed;
-        }
-        else if(keyH.leftPressed == true) {
+        if(keyH.leftPressed == true) {
             worldX -= speed;
             direction = "left";
         }
-        else if(keyH.rightPressed == true) {
+        if(keyH.rightPressed == true) {
             worldX += speed;
             direction = "right";
         }
     }
     public void draw(Graphics2D g2) {
         // g2.setColor(Color.white);
-
         // g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
 
         BufferedImage image = null;
