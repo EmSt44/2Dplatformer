@@ -17,22 +17,24 @@ public class GamePanel extends JPanel implements Runnable{
     final int scale = 3; //skala upp dem så det inte ser så litet ut på skärmen
 
     public final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol; //768 pixlar (16 48*48 tiles)
-    final int screenHeight = tileSize * maxScreenRow; //576 pixlar (12 48*48 tiles)
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize * maxScreenCol; //768 pixlar (16 48*48 tiles)
+    public final int screenHeight = tileSize * maxScreenRow; //576 pixlar (12 48*48 tiles)
+
+    //Världsinställningar
+    public final int maxWorldCol = 50; //Ändra numret till vår egna kartas collumn
+    public final int maxWorldRow = 50; //Ändra numret till vår egna kartas row
+    public final int worldWidth = tileSize * maxScreenCol; //Change to this variable in mapTileNum, as well as in load map. All maxScreenCol to this variable.
+    public final int worldHeight = tileSize * maxScreenRow; //Change to this variable in mapTileNum, as well as in load map. All maxScreenRow to this variable.
+    //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
     //FPS
     int FPS = 60;
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
-
-    //Set player's default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
+    public Player player = new Player(this, keyH);
 
     public GamePanel() {
 
