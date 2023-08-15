@@ -4,6 +4,7 @@ import main.GamePanel;
 import main.KeyHandler;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 public class Player extends Entity{
 
@@ -15,6 +16,12 @@ public class Player extends Entity{
         this.keyH = keyH;
 
         setDefaultValues();
+
+        solidArea = new Rectangle();
+        solidArea.x = 0;
+        solidArea.y = 0;
+        solidArea.width = 48;
+        solidArea.height = 48;
     }
     public void setDefaultValues() {
 
@@ -24,18 +31,48 @@ public class Player extends Entity{
     }
     public void update() {
         if(keyH.upPressed == true) {
-            y -= speed;
+            direction = "up";
+            //y -= speed;
         }
         else if(keyH.downPressed == true) {
-            y += speed;
+            direction = "down";
+            //y += speed;
         }
         else if(keyH.leftPressed == true) {
-            x -= speed;
+            direction = "left";
+            //x -= speed;
         }
         else if(keyH.rightPressed == true) {
-            x += speed;
+            direction = "right";
+            //x += speed;
+
         }
     }
+
+    //checks tile collision based on the above directions
+    collisionOn = false;
+    gp.checker.checkTile(this);
+
+    //if collision is false player can move
+
+    if (collision == false){
+        switch (direction){
+            case "up":
+                y -= speed;
+                break;
+            case "down":
+                y += speed;
+                break;
+            case "left":
+                x -= speed;
+                break;
+            case "right":
+                x += speed;
+                break;
+        }
+
+    }
+
     public void draw(Graphics2D g2) {
         g2.setColor(Color.white);
 

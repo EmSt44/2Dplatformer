@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import entity.Player;
 
+
 public class GamePanel extends JPanel implements Runnable{
     
     //Skärminställningar
@@ -25,10 +26,12 @@ public class GamePanel extends JPanel implements Runnable{
     //FPS
     int FPS = 60;
 
+    //TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
 
+    CollisionChecker checker = new CollisionChecker(this);
     //Set player's default position
     int playerX = 100;
     int playerY = 100;
