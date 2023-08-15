@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+//import tile.TileManager;
 
 public class CollisionCheker {
     GamePanel gp;

@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class Player extends Entity{
+public class Player extends Entity{ 
 
     GamePanel gp;
     KeyHandler keyH;
@@ -29,7 +29,7 @@ public class Player extends Entity{
         y = 100;
         speed = 4;
     }
-    public void update() {
+    public void update(){
         if(keyH.upPressed == true) {
             direction = "up";
             //y -= speed;
@@ -44,8 +44,6 @@ public class Player extends Entity{
         }
         else if(keyH.rightPressed == true) {
             direction = "right";
-            //x += speed;
-
         }
     }
 
@@ -73,7 +71,7 @@ public class Player extends Entity{
 
     }
 
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2){
         g2.setColor(Color.white);
 
         g2.fillRect(x, y, gp.tileSize, gp.tileSize);
