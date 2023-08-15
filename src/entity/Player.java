@@ -38,7 +38,7 @@ public class Player extends Entity{
         worldY = gp.tileSize * //starting tile for Y
         */
         worldX = 100;
-        worldY = 100;
+        worldY = 400;
         speed = 4;
     }
 
@@ -59,7 +59,7 @@ public class Player extends Entity{
     public void update() {
         if(keyH.upPressed == true) {
             boolean check = false;
-            y += ((-3) * jumpAnimation) + (1 * animationTime);
+            worldY += ((-3) * jumpAnimation) + (1 * animationTime);
             animationTime++;
             if(jumpAnimation <= 7 && !check) {
                 jumpAnimation++;
@@ -71,11 +71,11 @@ public class Player extends Entity{
                 check = true;
             }
             
-            if(y > 500) {
-                //keyH.upPressed = false;
-                y = 100;
-                //animationTime = 0;
-                //jumpAnimation = 0;
+            if(worldY > 400) {
+                keyH.upPressed = false;
+                worldY = 400;
+                animationTime = 0;
+                jumpAnimation = 0;
             }
 
             //y -= speed;
