@@ -42,6 +42,9 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
 
+    //UI
+    UI ui = new UI(this);
+
     //FPS
     int FPS = 60;
 
@@ -121,8 +124,8 @@ public class GamePanel extends JPanel implements Runnable{
                     npc[i].update();
                 }
             }
-        } else if(gameState == pauseState) {
-            //gör inget, spelet är pausat
+        } else if(gameState == pauseState) { //spelet är pausat
+            //gör inget
         }
     }
     
@@ -133,11 +136,15 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
+
         // Ritar TILES, viktigt: draw tiles innan player!
         tileM.draw(g2); 
 
         // Ritar PLAYER
         player.draw(g2);
+
+        //rita UI
+        ui.draw(g2);
 
         // Ritar NPC
         for(int i = 0; i < npc.length; i++) {
