@@ -30,10 +30,10 @@ public void getTileImage() { //läser in png filer för varje tile och lägger d
 
 try {
      tile[0] = new Tile();
-     tile[0].image = ImageIO.read(new File("res/tiles/bluetile.png"));
+     tile[0].image = ImageIO.read(new File("res/tiles/tegel.png"));
 
      tile[1] = new Tile();
-     tile[1].image = ImageIO.read(new File("res/tiles/redtile.png"));
+     tile[1].image = ImageIO.read(new File("res/tiles/tegel_bakgrund.png"));
 
 
     
@@ -49,7 +49,7 @@ public void loadMap() {
     try {
 
     //InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
-    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap"));
+    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap2"));
     
     //startvärde för läsningen av kartan
     int col = 0;
