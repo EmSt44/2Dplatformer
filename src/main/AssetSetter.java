@@ -14,8 +14,8 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     public void setNPC() {
         
         gp.npc[0] = new NPC_Bat(gp);
-        gp.npc[0].worldX = gp.tileSize * 3; 
-        gp.npc[0].worldY = gp.tileSize * 5;
+        gp.npc[0].worldX = gp.tileSize * 40; 
+        gp.npc[0].worldY = gp.tileSize * 45;
     }
     
 }
