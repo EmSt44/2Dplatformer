@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements Runnable{
     //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
     //KeyHandler
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
 
     //Entity, objekt
     public Player player = new Player(this, keyH);
@@ -47,6 +47,11 @@ public class GamePanel extends JPanel implements Runnable{
 
     Thread gameThread;
 
+    //Gamestates
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
+
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -55,6 +60,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
+    }
+
+    public void setupGame() {
+        gameState = playState;
     }
 
     public void startGameThread() {
@@ -74,6 +83,8 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+
+        setupGame(); //sätter initella gamestaten
 
         while(gameThread != null) {
 
@@ -99,18 +110,22 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-    public void update() {
-
-        player.update();
+    public void update() {        
         
-        //uppdatera alla NPC
-        for(int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                npc[i].update();
-            }
-        }
+        if(gameState == playState) {
 
+            player.update();
+            
+            for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
+                if (npc[i] != null) {
+                    npc[i].update();
+                }
+            }
+        } else if(gameState == pauseState) {
+            //gör inget, spelet är pausat
+        }
     }
+    
     public void paintComponent(Graphics g) {
         Toolkit.getDefaultToolkit().sync();
 
