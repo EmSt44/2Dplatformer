@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 import entity.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
     
@@ -18,7 +19,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     public final int tileSize = originalTileSize * scale;
     public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final int maxScreenRow 
+
     public final int screenWidth = tileSize * maxScreenCol; //768 pixlar (16 48*48 tiles)
     public final int screenHeight = tileSize * maxScreenRow; //576 pixlar (12 48*48 tiles)
 
@@ -29,9 +31,11 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldHeight = tileSize * maxScreenRow; //Change to this variable in mapTileNum, as well as in load map. All maxScreenRow to this variable.
     //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
+
     //FPS
     int FPS = 60;
 
+    TileManager tileM = new TileManager(this); //skapar en tilemanager
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public Player player = new Player(this, keyH);
@@ -99,6 +103,8 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+
+        tileM.draw(g2); // ritar upp en tile, viktigt: draw tiles innan player!
 
         player.draw(g2);
 
