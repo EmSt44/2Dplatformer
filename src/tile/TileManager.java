@@ -35,6 +35,9 @@ try {
      tile[1] = new Tile();
      tile[1].image = ImageIO.read(new File("res/tiles/tegel_bakgrund.png"));
 
+     tile[2] = new Tile();
+     tile[2].image = ImageIO.read(new File("res/tiles/grass.png"));
+
 
     
 
@@ -49,7 +52,7 @@ public void loadMap() {
     try {
 
     //InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
-    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap3"));
+    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap4"));
     
     //startvärde för läsningen av kartan
     int col = 0;
