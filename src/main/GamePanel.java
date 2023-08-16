@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
-import entity.Player;
+import entity.*;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -31,15 +31,21 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldHeight = tileSize * maxScreenRow; //Change to this variable in mapTileNum, as well as in load map. All maxScreenRow to this variable.
     //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
+    //KeyHandler
+    KeyHandler keyH = new KeyHandler(this);
+
+    //Entity, objekt
+    public Player player = new Player(this, keyH);
+    public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
+
+    //TileManager, KeyHandler, liknande managers
+    TileManager tileM = new TileManager(this);
+    AssetSetter aSetter = new AssetSetter(this);
 
     //FPS
     int FPS = 60;
 
-    //Instansiera klasser
-    TileManager tileM = new TileManager(this); //skapar en tilemanager
-    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
-    public Player player = new Player(this, keyH);
 
     //Gamestates
     public int gameState;
@@ -104,16 +110,22 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-    public void update() {
-
+    public void update() {        
+        
         if(gameState == playState) {
+
             player.update();
-        }
-        else if(gameState == pauseState) {
+            
+            for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
+                if (npc[i] != null) {
+                    npc[i].update();
+                }
+            }
+        } else if(gameState == pauseState) {
             //gör inget, spelet är pausat
         }
-
     }
+    
     public void paintComponent(Graphics g) {
         Toolkit.getDefaultToolkit().sync();
 
@@ -121,9 +133,18 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2); // ritar upp en tile, viktigt: draw tiles innan player!
+        // Ritar TILES, viktigt: draw tiles innan player!
+        tileM.draw(g2); 
 
+        // Ritar PLAYER
         player.draw(g2);
+
+        // Ritar NPC
+        for(int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                npc[i].draw(g2);
+            }
+        }
 
         g2.dispose();
     }
