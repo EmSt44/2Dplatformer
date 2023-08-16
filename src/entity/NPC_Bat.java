@@ -19,8 +19,8 @@ public class NPC_Bat extends Entity{
 
     public void getImage() {
         try {
-            left = ImageIO.read(new File("res/player/ninja_l.png")); //använder player texturen för tillfället
-            right = ImageIO.read(new File("res/player/ninja_r.png"));
+            left = ImageIO.read(new File("res/npc/bat_l.png"));
+            right = ImageIO.read(new File("res/npc/bat_r.png"));
 
         } 
         catch (IOException e) {
