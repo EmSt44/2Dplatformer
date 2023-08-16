@@ -41,4 +41,12 @@ public class Entity{
 
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
+
+    public void update() {
+        
+        setAction();
+        //collison detection bör också hända här.
+    }
+
+    public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
 }
