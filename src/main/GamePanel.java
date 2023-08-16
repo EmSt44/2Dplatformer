@@ -35,10 +35,16 @@ public class GamePanel extends JPanel implements Runnable{
     //FPS
     int FPS = 60;
 
+    //Instansiera klasser
     TileManager tileM = new TileManager(this); //skapar en tilemanager
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public Player player = new Player(this, keyH);
+
+    //Gamestates
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
 
@@ -48,6 +54,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
+    }
+
+    public void setupGame() {
+        gameState = playState;
     }
 
     public void startGameThread() {
@@ -67,6 +77,8 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+
+        setupGame(); //sätter initella gamestaten
 
         while(gameThread != null) {
 
@@ -94,7 +106,12 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public void update() {
 
-        player.update();
+        if(gameState == playState) {
+            player.update();
+        }
+        else if(gameState == pauseState) {
+            //gör inget, spelet är pausat
+        }
 
     }
     public void paintComponent(Graphics g) {
