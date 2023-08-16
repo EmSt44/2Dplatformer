@@ -11,14 +11,14 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity{
 
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        
+        super(gp);
         this.keyH = keyH;
 
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
@@ -29,17 +29,9 @@ public class Player extends Entity{
     }
     public void setDefaultValues() {
 
-        /*Edit out later
-        worldX = g
-        x = 100;
-        y = 300;    
-        y = 100;
-        speed = 4;p.tileSize * //starting tile for X
-        worldY = gp.tileSize * //starting tile for Y
-        */
-        worldX = 100;
-        worldY = 400;
-        speed = 4;
+        worldX = gp.tileSize * 49;
+        worldY = gp.tileSize * 48;
+        speed = 5;
     }
 
     public void getPlayerImage() {
@@ -71,9 +63,9 @@ public class Player extends Entity{
                 check = true;
             }
             
-            if(worldY > 400) {
+            if(worldY > gp.tileSize * 48) {
                 keyH.upPressed = false;
-                worldY = 400;
+                worldY = gp.tileSize * 48;
                 animationTime = 0;
                 jumpAnimation = 0;
             }
@@ -107,6 +99,6 @@ public class Player extends Entity{
             image = right;
         }
 
-        g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }
