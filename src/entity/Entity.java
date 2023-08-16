@@ -9,9 +9,6 @@ public class Entity{
     GamePanel gp;
 
     public int worldX, worldY;
-    
-    // Ta bort senare
-    public int x, y;
     public int speed;
 
     public BufferedImage left, right;
