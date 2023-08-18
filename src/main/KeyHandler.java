@@ -69,13 +69,13 @@ public class KeyHandler implements KeyListener {
         
         int code = e.getKeyCode();
 
-        /*if(code == KeyEvent.VK_W) {
-            null;
-        }*/
+        if(code == KeyEvent.VK_W) {
+            upPressed = false;
+        }
 
-        /*if(code == KeyEvent.VK_S) {
-            null;
-        }*/
+        if(code == KeyEvent.VK_S) {
+            downPressed = false;
+        }
 
         if(code == KeyEvent.VK_A) {
             leftPressed = false;
