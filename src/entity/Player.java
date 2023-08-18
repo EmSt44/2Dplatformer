@@ -45,7 +45,7 @@ public class Player extends Entity{
         else if(keyH.rightPressed == true) {
             direction = "right";
         }
-    }
+    
 
     
 
@@ -53,26 +53,27 @@ public class Player extends Entity{
 
 
     //change this to an entity
-    collisionOn = false;
+    this.collisionOn = false;
     gp.checker.checkTile(this);
 
-    if (collisionOn == false){
+        if (this.collisionOn == false){
 
-        switch (direction){
-            case "up":
-                y -= speed;
-                break;
-            case "down":
-                y += speed;
-                break;
-            case "left":
-                x -= speed;
-                break;
-            case "right":
-                x += speed;
-                break;
+            switch (direction){
+                case "up":
+                    y -= speed;
+                    break;
+                case "down":
+                    y += speed;
+                    break;
+                case "left":
+                    x -= speed;
+                    break;
+                case "right":
+                    x += speed;
+                    break;
+            }
+
         }
-
     }
 
     public void draw(Graphics2D g2) {
