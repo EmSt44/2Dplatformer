@@ -34,6 +34,14 @@ public class UI extends JPanel {
     }
 
     public void drawPause(Graphics2D g2) {
-        g2.drawString("Paused", gp.player.screenX, gp.player.screenY);
+
+        String pauseText = "Paused";
+
+        int pauseTextLength = (int)g2.getFontMetrics().getStringBounds(pauseText, g2).getWidth();
+        int xPlacement = gp.screenWidth/2-pauseTextLength/2;
+
+        int yPlacement = gp.screenHeight/2;
+        
+        g2.drawString(pauseText, xPlacement, yPlacement);
     }
 }
