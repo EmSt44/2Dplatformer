@@ -70,21 +70,24 @@ public class Player extends Entity{
 
     //change this to an entity
     this.collisionOn = false;
-    gp.checker.checkTile(this);
     if(keyH.upPressed == true) {
         direction = "up";
+        gp.checker.checkTile(this);
         worldY = collisionOn ? worldY : worldY - speed;
     }
     if(keyH.downPressed == true) {
         direction = "down";
+        gp.checker.checkTile(this);
         worldY = collisionOn ? worldY : worldY + speed;
     }
     if(keyH.leftPressed == true) {
         direction = "left";
+        gp.checker.checkTile(this);
         worldX = collisionOn ? worldX : worldX - speed;
     }
     if(keyH.rightPressed == true) {
         direction = "right";
+        gp.checker.checkTile(this);
         worldX = collisionOn ? worldX : worldX + speed;
     }
 
