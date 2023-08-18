@@ -43,6 +43,9 @@ public class GamePanel extends JPanel implements Runnable{
     AssetSetter aSetter = new AssetSetter(this);
     public CollisionCheker checker = new CollisionCheker(this);
 
+    //UI
+    UI ui = new UI(this);
+
     //FPS
     int FPS = 60;
 
@@ -57,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable{
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int menuState = 3;
 
     public GamePanel() {
 
@@ -68,8 +72,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     }
 
+    //Väljer initiell gameState
     public void setupGame() {
-        gameState = playState;
+        gameState = menuState;
     }
 
     public void startGameThread() {
@@ -127,8 +132,8 @@ public class GamePanel extends JPanel implements Runnable{
                     npc[i].update();
                 }
             }
-        } else if(gameState == pauseState) {
-            //gör inget, spelet är pausat
+        } else if(gameState == pauseState) { //spelet är pausat
+            //gör inget
         }
     }
     
@@ -139,17 +144,27 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Ritar TILES, viktigt: draw tiles innan player!
-        tileM.draw(g2); 
+        //MenuState
+        if(gameState == menuState) {
+            ui.draw(g2);
+        }
+        //Andra states
+        else {
+            // Ritar TILES, viktigt: draw tiles innan player!
+            tileM.draw(g2); 
 
-        // Ritar PLAYER
-        player.draw(g2);
+            // Ritar PLAYER
+            player.draw(g2);
 
-        // Ritar NPC
-        for(int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
+            //rita UI
+            ui.draw(g2);
+
+            // Ritar NPC
+            for(int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
                 npc[i].draw(g2);
             }
+          } 
         }
 
         g2.dispose();
