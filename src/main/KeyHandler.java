@@ -1,11 +1,17 @@
 package main;
 
+//import entity.Entity;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
+    GamePanel gp; //för att interagera med gamepanel
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -20,9 +26,9 @@ public class KeyHandler implements KeyListener {
             upPressed = true;
         }
 
-        if(code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
+        /*if(code == KeyEvent.VK_S) {
+            null;
+        }*/
 
         if(code == KeyEvent.VK_A) {
             leftPressed = true;
@@ -31,6 +37,15 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_D) {
             rightPressed = true;
         }
+
+        if(code == KeyEvent.VK_P) {
+            if(gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            }
+            else if(gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
+        }
     }
 
     @Override
@@ -38,13 +53,13 @@ public class KeyHandler implements KeyListener {
         
         int code = e.getKeyCode();
 
-        if(code == KeyEvent.VK_W) {
-            upPressed = false;
-        }
+        /*if(code == KeyEvent.VK_W) {
+            null;
+        }*/
 
-        if(code == KeyEvent.VK_S) {
-            downPressed = false;
-        }
+        /*if(code == KeyEvent.VK_S) {
+            null;
+        }*/
 
         if(code == KeyEvent.VK_A) {
             leftPressed = false;

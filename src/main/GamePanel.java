@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
-import entity.Player;
+import entity.*;
 import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -18,25 +18,45 @@ public class GamePanel extends JPanel implements Runnable{
     final int scale = 3; //skala upp dem så det inte ser så litet ut på skärmen
 
     public final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize * maxScreenCol; //768 pixlar (16 48*48 tiles)
-    final int screenHeight = tileSize * maxScreenRow; //576 pixlar (12 48*48 tiles)
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+
+    public final int screenWidth = tileSize * maxScreenCol; //768 pixlar (16 48*48 tiles)
+    public final int screenHeight = tileSize * maxScreenRow; //576 pixlar (12 48*48 tiles)
+
+    //Världsinställningar
+    public final int maxWorldCol = 50; //Ändra numret till vår egna kartas collumn
+    public final int maxWorldRow = 50; //Ändra numret till vår egna kartas row
+    public final int worldWidth = tileSize * maxScreenCol; //Change to this variable in mapTileNum, as well as in load map. All maxScreenCol to this variable.
+    public final int worldHeight = tileSize * maxScreenRow; //Change to this variable in mapTileNum, as well as in load map. All maxScreenRow to this variable.
+    //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
+
+    //KeyHandler
+    KeyHandler keyH = new KeyHandler(this);
+
+    //Entity, objekt
+    public Player player = new Player(this, keyH);
+    public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
+
+    //TileManager, KeyHandler, liknande managers
+    TileManager tileM = new TileManager(this);
+    AssetSetter aSetter = new AssetSetter(this);
+    public CollisionCheker checker = new CollisionCheker(this);
 
     //FPS
     int FPS = 60;
 
-    TileManager tileM = new TileManager(this); //skapar en tilemanager
-    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
-    public CollisionCheker checker = new CollisionCheker(this);
-
     
     //Set player's default position
-    int playerX = 100;
-    int playerY = 100;
+    int playerX = 95;
+    int playerY = 95;
     int playerSpeed = 4;
+
+    //Gamestates
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
 
@@ -46,6 +66,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
         this.setFocusable(true);
 
+    }
+
+    public void setupGame() {
+        gameState = playState;
     }
 
     public void startGameThread() {
@@ -65,6 +89,8 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+
+        setupGame(); //sätter initella gamestaten
 
         while(gameThread != null) {
 
@@ -90,11 +116,22 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-    public void update() {
+    public void update() {        
+        
+        if(gameState == playState) {
 
-        player.update();
-
+            player.update();
+            
+            for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
+                if (npc[i] != null) {
+                    npc[i].update();
+                }
+            }
+        } else if(gameState == pauseState) {
+            //gör inget, spelet är pausat
+        }
     }
+    
     public void paintComponent(Graphics g) {
         Toolkit.getDefaultToolkit().sync();
 
@@ -102,9 +139,18 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileM.draw(g2); // ritar upp en tile, viktigt: draw tiles innan player!
+        // Ritar TILES, viktigt: draw tiles innan player!
+        tileM.draw(g2); 
 
+        // Ritar PLAYER
         player.draw(g2);
+
+        // Ritar NPC
+        for(int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                npc[i].draw(g2);
+            }
+        }
 
         g2.dispose();
     }
