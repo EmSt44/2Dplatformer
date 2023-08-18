@@ -28,6 +28,7 @@ public class Player extends Entity{
 
         setDefaultValues();
 
+        //ändra dessa till en mer rimlig hitbox
         solidArea = new Rectangle();
         solidArea.x = 0;
         solidArea.y = 0;
@@ -59,21 +60,7 @@ public class Player extends Entity{
     }
 
     public void update() {
-        if(keyH.upPressed == true) {
-            direction = "up";
-            //y -= speed;
-        }
-        else if(keyH.downPressed == true) {
-            direction = "down";
-            //y += speed;
-        }
-        else if(keyH.leftPressed == true) {
-            direction = "left";
-            //x -= speed;
-        }
-        else if(keyH.rightPressed == true) {
-            direction = "right";
-        }
+        
     
 
     
@@ -84,23 +71,39 @@ public class Player extends Entity{
     //change this to an entity
     this.collisionOn = false;
     gp.checker.checkTile(this);
+    if(keyH.upPressed == true) {
+        direction = "up";
+        worldY = collisionOn ? worldY : worldY - speed;
+    }
+    else if(keyH.downPressed == true) {
+        direction = "down";
+        worldY = collisionOn ? worldY : worldY + speed;
+    }
+    else if(keyH.leftPressed == true) {
+        direction = "left";
+        worldX = collisionOn ? worldX : worldX - speed;
+    }
+    else if(keyH.rightPressed == true) {
+        direction = "right";
+        worldX = collisionOn ? worldX : worldX + speed;
+    }
 
-        if (this.collisionOn == false){
-
-            switch (direction){
-                case "up":
-                    worldY -= speed;
-                    break;
-                case "down":
-                    worldY += speed;
-                    break;
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
-            }
+        // if (this.collisionOn == false){
+            // switch (direction){
+            //     case "up":
+            //         worldY -= speed;
+            //         break;
+            //     case "down":
+            //         worldY += speed;
+            //         break;
+            //     case "left":
+            //         worldX -= speed;
+            //         break;
+            //     case "right":
+            //         worldX += speed;
+            //         break;
+            //  }
+            // }
 
         //     boolean check = false;
         //     worldY += ((-3) * jumpAnimation) + (1 * animationTime);
@@ -135,7 +138,7 @@ public class Player extends Entity{
         // if(keyH.rightPressed == true) {
         //     worldX += speed;
         //     direction = "right";
-        }
+        
     }
 
     public void draw(Graphics2D g2) {
