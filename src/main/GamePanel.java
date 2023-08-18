@@ -60,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable{
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int menuState = 3;
 
     public GamePanel() {
 
@@ -71,8 +72,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     }
 
+    //Väljer initiell gameState
     public void setupGame() {
-        gameState = playState;
+        gameState = menuState;
     }
 
     public void startGameThread() {
@@ -142,21 +144,27 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
+        //MenuState
+        if(gameState == menuState) {
+            ui.draw(g2);
+        }
+        //Andra states
+        else {
+            // Ritar TILES, viktigt: draw tiles innan player!
+            tileM.draw(g2); 
 
-        // Ritar TILES, viktigt: draw tiles innan player!
-        tileM.draw(g2); 
+            // Ritar PLAYER
+            player.draw(g2);
 
-        // Ritar PLAYER
-        player.draw(g2);
+            //rita UI
+            ui.draw(g2);
 
-        //rita UI
-        ui.draw(g2);
-
-        // Ritar NPC
-        for(int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
+            // Ritar NPC
+            for(int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
                 npc[i].draw(g2);
             }
+          } 
         }
 
         g2.dispose();
