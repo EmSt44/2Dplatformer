@@ -42,9 +42,9 @@ public class KeyHandler implements KeyListener {
                 upPressed = true;
             }
 
-             /*if(code == KeyEvent.VK_S) {
-                null;
-            }*/
+            if(code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
 
             if(code == KeyEvent.VK_A) {
                 leftPressed = true;
