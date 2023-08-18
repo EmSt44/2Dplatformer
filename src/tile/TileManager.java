@@ -12,14 +12,16 @@ import main.GamePanel;
 
 public class TileManager {
 
+
 GamePanel gp; //gamepanel
-Tile[] tile;  //lista med olika typer av tiles
-int mapTileNum[][];
+public Tile[] tile;  //lista med olika typer av tiles
+public int mapTileNum[][];
+
 
 public TileManager(GamePanel gp) {
 
     this.gp = gp;
-    tile = new Tile[10]; //maximal mängd typer av tiles, ändra denna siffra för att lägga till fler
+    tile = new Tile[11]; //maximal mängd typer av tiles, ändra denna siffra för att lägga till fler
     mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 
     getTileImage();
@@ -31,14 +33,38 @@ public void getTileImage() { //läser in png filer för varje tile och lägger d
 try {
      tile[0] = new Tile();
      tile[0].image = ImageIO.read(new File("res/tiles/tegel.png"));
+     tile[0].collision = true;
 
      tile[1] = new Tile();
      tile[1].image = ImageIO.read(new File("res/tiles/tegel_bakgrund.png"));
 
+     tile[2] = new Tile();
+     tile[2].image = ImageIO.read(new File("res/tiles/grass.png"));
+     tile[2].collision = true;
 
-    
+     tile[3] = new Tile();
+     tile[3].image = ImageIO.read(new File("res/tiles/tree_1.png"));
 
+     tile[4] = new Tile();
+     tile[4].image = ImageIO.read(new File("res/tiles/forrest.png"));
+     
+     tile[5] = new Tile();
+     tile[5].image = ImageIO.read(new File("res/tiles/tree_2.png"));
 
+     tile[6] = new Tile();
+     tile[6].image = ImageIO.read(new File("res/tiles/brickwall_lamp.png"));
+
+     tile[7] = new Tile();
+     tile[7].image = ImageIO.read(new File("res/tiles/brickwall_grasswalk.png"));
+
+     tile[8] = new Tile();
+     tile[8].image = ImageIO.read(new File("res/tiles/sky.png"));
+
+     tile[9] = new Tile();
+     tile[9].image = ImageIO.read(new File("res/tiles/forrest_top.png"));
+
+     tile[10] = new Tile();
+     tile[10].image = ImageIO.read(new File("res/tiles/grass_sky.png"));
 } catch(IOException e) {
     e.printStackTrace();
   }
@@ -49,7 +75,7 @@ public void loadMap() {
     try {
 
     //InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
-    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap3"));
+    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap4"));
     
     //startvärde för läsningen av kartan
     int col = 0;
