@@ -12,9 +12,11 @@ import main.GamePanel;
 
 public class TileManager {
 
+
 GamePanel gp; //gamepanel
-Tile[] tile;  //lista med olika typer av tiles
-int mapTileNum[][];
+public Tile[] tile;  //lista med olika typer av tiles
+public int mapTileNum[][];
+
 
 public TileManager(GamePanel gp) {
 
@@ -31,13 +33,15 @@ public void getTileImage() { //läser in png filer för varje tile och lägger d
 try {
      tile[0] = new Tile();
      tile[0].image = ImageIO.read(new File("res/tiles/tegel.png"));
+     tile[0].collision = true;
 
      tile[1] = new Tile();
      tile[1].image = ImageIO.read(new File("res/tiles/tegel_bakgrund.png"));
 
      tile[2] = new Tile();
      tile[2].image = ImageIO.read(new File("res/tiles/grass.png"));
-     
+     tile[2].collision = true;
+
      tile[3] = new Tile();
      tile[3].image = ImageIO.read(new File("res/tiles/tree_1.png"));
 

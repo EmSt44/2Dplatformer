@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
@@ -12,8 +13,11 @@ public class Entity{
     public int worldX, worldY;
     public int speed;
 
+    public String direction = "right"; //höger som default direction
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
+
     public BufferedImage left, right;
-    public String direction;
 
     public int animationTime = 0;
     public int jumpAnimation = 1;

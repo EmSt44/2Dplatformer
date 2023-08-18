@@ -41,11 +41,17 @@ public class GamePanel extends JPanel implements Runnable{
     //TileManager, KeyHandler, liknande managers
     TileManager tileM = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
+    public CollisionCheker checker = new CollisionCheker(this);
 
     //FPS
     int FPS = 60;
 
     Thread gameThread;
+    
+    //Set player's default position
+    int playerX = 95;
+    int playerY = 95;
+    int playerSpeed = 4;
 
     //Gamestates
     public int gameState;
