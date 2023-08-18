@@ -22,30 +22,40 @@ public class KeyHandler implements KeyListener {
         
         int code = e.getKeyCode();
 
-        if(code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
+        //Tillåt endast unpause knapptryck när spelet är pausat
+        if(gp.gameState == gp.pauseState) {
 
-        /*if(code == KeyEvent.VK_S) {
-            null;
-        }*/
-
-        if(code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-
-        if(code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-
-        if(code == KeyEvent.VK_P) {
-            if(gp.gameState == gp.playState) {
-                gp.gameState = gp.pauseState;
-            }
-            else if(gp.gameState == gp.pauseState) {
+            //Unpause
+            if(code ==KeyEvent.VK_P) {
                 gp.gameState = gp.playState;
             }
         }
+        //Tillåt alla knapptryck då spelet kör
+        else if(gp.gameState == gp.playState) {
+
+            //Pause
+            if(code == KeyEvent.VK_P) {
+                gp.gameState = gp.pauseState;
+            }
+
+            if(code == KeyEvent.VK_W) {
+                upPressed = true;
+            }
+
+             /*if(code == KeyEvent.VK_S) {
+                null;
+            }*/
+
+            if(code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+
+            if(code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+
+        }
+
     }
 
     @Override
