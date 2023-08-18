@@ -30,10 +30,10 @@ public class Player extends Entity{
 
         //ändra dessa till en mer rimlig hitbox
         solidArea = new Rectangle();
-        solidArea.x = 0;
-        solidArea.y = 0;
-        solidArea.width = 48;
-        solidArea.height = 48;
+        solidArea.x = 8;
+        solidArea.y = 8;
+        solidArea.width = 32;
+        solidArea.height = 32;
 
         getPlayerImage();
 
@@ -75,15 +75,15 @@ public class Player extends Entity{
         direction = "up";
         worldY = collisionOn ? worldY : worldY - speed;
     }
-    else if(keyH.downPressed == true) {
+    if(keyH.downPressed == true) {
         direction = "down";
         worldY = collisionOn ? worldY : worldY + speed;
     }
-    else if(keyH.leftPressed == true) {
+    if(keyH.leftPressed == true) {
         direction = "left";
         worldX = collisionOn ? worldX : worldX - speed;
     }
-    else if(keyH.rightPressed == true) {
+    if(keyH.rightPressed == true) {
         direction = "right";
         worldX = collisionOn ? worldX : worldX + speed;
     }
