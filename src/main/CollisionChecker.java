@@ -3,11 +3,11 @@ package main;
 import entity.Entity;
 //import tile.TileManager;
 
-public class CollisionCheker {
+public class CollisionChecker {
     GamePanel gp;
 
 
-    public CollisionCheker(GamePanel gp){
+    public CollisionChecker(GamePanel gp){
         this.gp = gp;
     }
 
