@@ -11,7 +11,7 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    //checks collision for all entities not just the player. does not account for gravity
+    //checks collision for all entities not just the player. does not account for gravity. depends on it's direction
     public void checkTile(Entity entity){
 
         int entityLeftX = entity.worldX + entity.solidArea.x;
