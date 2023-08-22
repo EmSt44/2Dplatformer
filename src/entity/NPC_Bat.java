@@ -17,10 +17,10 @@ public class NPC_Bat extends Entity{
         speed = 3;
         //när collision finns lägg till hitbox här
         solidArea = new Rectangle();
-        solidArea.x = 1;
-        solidArea.y = 4;
-        solidArea.width = 14;
-        solidArea.height = 8;
+        solidArea.x = 3;
+        solidArea.y = 12;
+        solidArea.width = 42;
+        solidArea.height = 24;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
