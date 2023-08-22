@@ -130,9 +130,8 @@ public class Player extends Entity{
             else {
                 //nollställ jump speed om man slår i tak
                 upSpeed = 0;
-                while (!verticalChecker.checkHeadCollision(this, 1)) { //av nån anledning verkar detta kodblock aldrig nås?
+                while (!verticalChecker.checkHeadCollision(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
                     worldY--;
-                    System.out.println("aj mitt huvud 2");
                 }
             }
         }

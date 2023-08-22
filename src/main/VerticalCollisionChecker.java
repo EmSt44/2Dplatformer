@@ -39,7 +39,7 @@ public class VerticalCollisionChecker { //används för att kolla om entity bör
 
         int tileNum1, tileNum2;
 
-        entityTopRow = (entityTopY - entity.speed) / gp.tileSize;
+        entityTopRow = (entityTopY - upSpeed) / gp.tileSize;
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
 
