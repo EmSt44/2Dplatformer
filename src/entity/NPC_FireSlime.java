@@ -78,8 +78,8 @@ public class NPC_FireSlime extends Entity{
                         collisionOn = false;
                         gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                         while (!collisionOn) { //denna så att man landar på marken och inte ovanför
-                            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                             this.worldY += accumulatedFallSpeed;
+                            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                         }
                         onGround = true;
                         this.direction = "right";
@@ -144,8 +144,8 @@ public class NPC_FireSlime extends Entity{
                         collisionOn = false;
                         gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                         while (!collisionOn) { //denna så att man landar på marken och inte ovanför
-                            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                             this.worldY += accumulatedFallSpeed;
+                            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
                         }
                     }
                 }
