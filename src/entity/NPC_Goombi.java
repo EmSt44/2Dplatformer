@@ -60,14 +60,20 @@ public class NPC_Goombi extends Entity{
         //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
         if (upSpeed <= 0) { 
-            if (!gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
+            collisionOn = false;
+            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+            //kollision med npc/objekt??
+            if (!collisionOn) {
                 this.worldY += accumulatedFallSpeed;
                 accumulatedFallSpeed += gravityModifier;
             }
             else {
                 //återställ fall speed när man står på marken
                 accumulatedFallSpeed = 1;
-                while (!gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
+                collisionOn = false;
+                gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+                //kollision med npc/objekt??
+                while (!collisionOn) { //denna så att man landar på marken och inte ovanför
                     this.worldY += accumulatedFallSpeed;
                 }
             }
