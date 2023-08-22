@@ -63,7 +63,7 @@ public class CollisionChecker {
     }
 
 
-    public boolean checkTileBelow(Entity entity, int fallSpeed) { //TRUE om man står/faller på en solid tile, FALSE annars
+    public void checkTileBelow(Entity entity, int fallSpeed) { //TRUE om man står/faller på en solid tile, FALSE annars
 
         int entityLeftX = entity.worldX + entity.solidArea.x;
         int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
@@ -79,10 +79,12 @@ public class CollisionChecker {
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
 
-        return (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true);
+        if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+            entity.collisionOn = true;
+        }
     }
 
-    public boolean checkTileAbove(Entity entity, int upSpeed) { //TRUE om toppen av hitbox slår/ska slå i en collision tile (enl upSpeed) FALSE annars
+    public void checkTileAbove(Entity entity, int upSpeed) { //TRUE om toppen av hitbox slår/ska slå i en collision tile (enl upSpeed) FALSE annars
         int entityLeftX = entity.worldX + entity.solidArea.x;
         int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
         int entityTopY = entity.worldY + entity.solidArea.y;
@@ -97,7 +99,9 @@ public class CollisionChecker {
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
 
-        return (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true);
+        if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+            entity.collisionOn = true;
+        }
     }
 
 
