@@ -19,9 +19,9 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         gp.npc[0].worldX = gp.tileSize * 40; 
         gp.npc[0].worldY = gp.tileSize * 45;
 
-        // gp.npc[1] = new NPC_Goombi(gp);
-        // gp.npc[1].worldX = gp.tileSize * 11;
-        // gp.npc[1].worldY = gp.tileSize * 47;
+        gp.npc[1] = new NPC_Goombi(gp);
+        gp.npc[1].worldX = gp.tileSize * 42;
+        gp.npc[1].worldY = gp.tileSize * 40;
     }
 
     public void setObject() {
