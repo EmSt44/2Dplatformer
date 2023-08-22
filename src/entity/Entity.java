@@ -15,8 +15,9 @@ public class Entity{
 
     public String direction = "right"; //höger som default direction
     public Rectangle solidArea;
-    public int solidAreaDefaultX;
-    public int solidAreaDefaultY;
+
+    public int solidAreaDefaultX, solidAreaDefaultY;
+
     public boolean collisionOn = false;
 
     public BufferedImage left, right;
@@ -28,6 +29,10 @@ public class Entity{
     //Endast relevanta då gravity = true, bör alltid initialiseras 1 respektive 0
     public double accumulatedFallSpeed = 1.0;
     public double upSpeed = 0.0;
+
+    //Entity status (liv)
+    public int maxLife;
+    public int life;
 
     public Entity(GamePanel gp) {
         this.gp = gp;

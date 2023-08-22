@@ -19,6 +19,7 @@ public class Main {
         window.setLocationRelativeTo(null); //ospecificerad window location = mitten av skärmen.
         window.setVisible(true);
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }

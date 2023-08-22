@@ -3,8 +3,11 @@ package main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
+
+import object.OBJ_heart;
+import object.SuperObject;
 
 public class UI extends JPanel {
     
@@ -12,18 +15,28 @@ public class UI extends JPanel {
     Font arial_40;
     Font arial_20;
 
+    //Images för att visa liv i HUD
+    BufferedImage heart_full, heart_half, heart_empty;
+
     public UI(GamePanel gp) {
 
         this.gp = gp;
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_20 = new Font("Arial", Font.PLAIN, 20);
+
+        //Skapa alla HUD objekt
+        SuperObject heart = new OBJ_heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_empty = heart.image3;
     }
 
     public void draw(Graphics2D g2) {
 
         
-
+        //Default font och färg
+        //Kan ändras i andra draw funktioner men blir alltid reset till detta när draw kallas
         g2.setFont(arial_40);
         g2.setColor(Color.white);
 
@@ -33,12 +46,50 @@ public class UI extends JPanel {
         }
         //PlayState
         else if(gp.gameState == gp.playState) {
-            //gör inget spelet är inte pausat, uppdatera detta med annan UI senare.
+            drawPlayerLife(g2);
         }
         //PauseState
         else if(gp.gameState == gp.pauseState) {
+            drawPlayerLife(g2);
             drawPause(g2);
         }
+    }
+
+    //Ritar upp liv på HUD
+    public void drawPlayerLife(Graphics2D g2) {
+
+        //koordinater i pixlar där första hjärtat ritas upp på skärmen
+        int x = 16;
+        int y = 16;
+
+        int hearts = gp.player.maxLife / 2 + gp.player.maxLife % 2; //mängd hjärtan, varje hjärta representerar 2 liv
+        int remainder = gp.player.life; //mängd liv som spelaren har kvar
+        int spacing = 4; //distans i pixlar mellan varje hjärta
+
+        int i = 0; //accumulator för loopen
+
+        while(i < hearts) {
+            if(remainder >= 2) {
+                g2.drawImage(heart_full, x, y, gp.tileSize, gp.tileSize, null);
+                remainder -= 2;
+                i++;
+                x += gp.tileSize + spacing;
+            }
+            else if(remainder == 1) {
+                g2.drawImage(heart_half, x, y, gp.tileSize, gp.tileSize, null);
+                remainder -= 1;
+                i++;
+                x += gp.tileSize + spacing;
+            }
+            else if(remainder == 0) {
+                g2.drawImage(heart_empty, x, y, gp.tileSize, gp.tileSize, null);
+                //vid 0 ändra inte remainder
+                i++;
+                x += gp.tileSize + spacing;
+            }
+
+        }
+
     }
 
     //Rita upp pausmenyn
@@ -65,6 +116,7 @@ public class UI extends JPanel {
         int yPlacement = gp.screenHeight/2;
         
         g2.drawString(titleText, xPlacement, yPlacement);
+
 
         g2.setFont(arial_20);
 
