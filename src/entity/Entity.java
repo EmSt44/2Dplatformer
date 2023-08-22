@@ -22,6 +22,10 @@ public class Entity{
     public int animationTime = 0;
     public int jumpAnimation = 1;
 
+    //Entity status (liv)
+    public int maxLife;
+    public int life;
+
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
