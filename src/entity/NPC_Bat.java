@@ -28,8 +28,10 @@ public class NPC_Bat extends Entity{
 
     public void getImage() {
         try {
-            left = ImageIO.read(new File("res/npc/bat_l.png"));
-            right = ImageIO.read(new File("res/npc/bat_r.png"));
+            left1 = ImageIO.read(new File("res/npc/bat_l.png"));
+            left2 = ImageIO.read(new File("res/npc/bat_l.png"));
+            right1 = ImageIO.read(new File("res/npc/bat_r.png"));
+            right2 = ImageIO.read(new File("res/npc/bat_r.png"));
 
         } 
         catch (IOException e) {

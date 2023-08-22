@@ -20,7 +20,10 @@ public class Entity{
 
     public boolean collisionOn = false;
 
-    public BufferedImage left, right;
+    public BufferedImage left1, right1, left2, right2;
+    public int spriteCounter = 0;
+    public int spriteNum = 1;
+    public int actionLockCounter = 0;
 
     //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
     //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
@@ -45,11 +48,21 @@ public class Entity{
         BufferedImage image = null;
 
         if (direction == "left") {
-            image = left;
+            if(spriteNum == 1){
+                image = left1;
+            }
+            if(spriteNum == 2) {
+                image = left2;
+            }
         } else if (direction == "right") {
-            image = right;
+            if(spriteNum == 1){
+                image = right1;
+            }
+            if(spriteNum == 2) {
+                image = right2;
+            }
         } else { //höger som standard, om ingen direction
-            image = right;
+            image = right1;
         }
 
         // g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
@@ -74,6 +87,17 @@ public class Entity{
         gp.cChecker.checkTile(this);
         gp.cChecker.checkEntity(this, gp.npc);
         // gp.cChecker.checkPlayer(this);
+
+        spriteCounter++;
+        if(spriteCounter > 10) {
+            if(spriteNum == 1) {
+                spriteNum = 2;
+            }
+            else if(spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
     }
 
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser

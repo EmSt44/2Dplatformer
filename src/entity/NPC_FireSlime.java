@@ -5,25 +5,27 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import main.GamePanel;
+import entity.Player;
 
-public class NPC_Goombi extends Entity{
+public class NPC_FireSlime extends Entity{
 
     public double accumulatedFallSpeed = 1.0;
     public double upSpeed = 0.0;
     public boolean gravity = true;
     public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
+    public int collisionFix = 0;
 
-    public NPC_Goombi(GamePanel gp) {
+    public NPC_FireSlime(GamePanel gp) {
         super(gp);
         getImage();
         direction = "right";
-        speed = 2;
+        speed = 15;
         //när collision finns lägg till hitbox här
         solidArea = new Rectangle();
-        solidArea.x = 3;
-        solidArea.y = 6;
-        solidArea.width = 42;
-        solidArea.height = 42;
+        solidArea.x = 16;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
@@ -31,11 +33,10 @@ public class NPC_Goombi extends Entity{
 
     public void getImage() {
         try {
-            left1 = ImageIO.read(new File("res/npc/goombi_l.png"));
-            left2 = ImageIO.read(new File("res/npc/goombi_l.png"));
-            right1 = ImageIO.read(new File("res/npc/goombi_r.png"));
-            right2 = ImageIO.read(new File("res/npc/goombi_r.png"));
-
+            left1 = ImageIO.read(new File("res/npc/fire_slime_l.png"));
+            left2 = ImageIO.read(new File("res/npc/fire_slime1_l.png"));
+            right1 = ImageIO.read(new File("res/npc/fire_slime_r.png"));
+            right2 = ImageIO.read(new File("res/npc/fire_slime1_r.png"));
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -43,20 +44,47 @@ public class NPC_Goombi extends Entity{
     }
 
     public void setAction() {
-        if (this.direction == "left") {
-            this.worldX -= speed;
-        } else if (this.direction == "right") {
-            this.worldX += speed;
+
+        actionLockCounter++;
+
+        if(actionLockCounter == 10){
+            if (this.direction == "left") {
+                this.worldX -= speed;
+            } 
+            else if (this.direction == "right") {
+                this.worldX += speed;
+            }
+
+            actionLockCounter = 0;
         }
         
         this.collisionOn = false;
         gp.cChecker.checkTile(this);
 
-        if(this.collisionOn == true && this.direction == "right"){
-            this.direction = "left";
+        if(gp.player.worldX < this.worldX){
+            if(this.collisionOn == true) {
+                collisionFix++;
+                this.direction = "right";
+            }
+            else if(collisionFix < 1){
+                this.direction = "left";
+            }
+            else if(collisionFix == 1){
+                collisionFix = 0;
+            }
+            
         }
-        else if(this.collisionOn == true && this.direction == "left") {
-            this.direction = "right";
+        else if(gp.player.worldX > this.worldX) {
+            if(this.collisionOn == true) {
+                collisionFix++;
+                this.direction = "left";
+            }
+            else if(collisionFix <= 0){
+                this.direction = "right";
+            }
+            else if(collisionFix == 1){
+                collisionFix = 0;
+            }
         }
 
         //RÖRELSE NEDÅT (FALLA)

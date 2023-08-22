@@ -2,6 +2,7 @@ package main;
 
 import entity.NPC_Bat;
 import entity.NPC_Goombi;
+import entity.NPC_FireSlime;
 import object.*;
 
 public class AssetSetter { //används för att sätta in objekt/NPC i världen
@@ -20,8 +21,12 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         gp.npc[0].worldY = gp.tileSize * 45;
 
         gp.npc[1] = new NPC_Goombi(gp);
-        gp.npc[1].worldX = gp.tileSize * 42;
-        gp.npc[1].worldY = gp.tileSize * 40;
+        gp.npc[1].worldX = gp.tileSize * 10;
+        gp.npc[1].worldY = gp.tileSize * 48;
+
+        gp.npc[2] = new NPC_FireSlime(gp);
+        gp.npc[2].worldX = gp.tileSize * 44;
+        gp.npc[2].worldY = gp.tileSize * 47;
     }
 
     public void setObject() {

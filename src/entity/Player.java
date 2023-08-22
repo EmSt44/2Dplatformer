@@ -66,8 +66,8 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
         try {
-            left = ImageIO.read(new File("res/player/ninja_l.png"));
-            right = ImageIO.read(new File("res/player/ninja_r.png"));
+            left1 = ImageIO.read(new File("res/player/ninja_l.png"));
+            right1 = ImageIO.read(new File("res/player/ninja_r.png"));
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -199,11 +199,11 @@ public class Player extends Entity{
         BufferedImage image = null;
 
         if (direction == "left") {
-            image = left;
+            image = left1;
         } else if (direction == "right") {
-            image = right;
+            image = right1;
         } else { //höger som standard, om ingen direction
-            image = right;
+            image = right1;
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
