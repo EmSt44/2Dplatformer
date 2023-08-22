@@ -22,15 +22,15 @@ public class KeyHandler implements KeyListener {
         
         int code = e.getKeyCode();
 
-        //Tillåt endast unpause knapptryck när spelet är pausat
+        //Knapptryck i pauseState
         if(gp.gameState == gp.pauseState) {
 
             //Unpause
-            if(code ==KeyEvent.VK_P) {
+            if(code == KeyEvent.VK_P) {
                 gp.gameState = gp.playState;
             }
         }
-        //Tillåt alla knapptryck då spelet kör
+        //Knapptryck i playState
         else if(gp.gameState == gp.playState) {
 
             //Pause
@@ -55,11 +55,13 @@ public class KeyHandler implements KeyListener {
             }
 
         }
+        //Knapptryck i menuState
         else if(gp.gameState == gp.menuState) {
 
             if(code == KeyEvent.VK_SPACE) {
                 gp.gameState = gp.playState;
             }
+
         }
 
     }
