@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import entity.*;
 import tile.TileManager;
+import object.*;
 
 public class GamePanel extends JPanel implements Runnable{
     
@@ -36,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     //Entity, objekt
     public Player player = new Player(this, keyH);
+    public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
+    public SuperObject obj[] = new SuperObject[10]; //maximal mängd olika Objekt du kan ha på mappen.
     public Entity npc[] = new Entity[10]; //maximal mängd aktiva NPC på en gång. Öka siffran för att ändra.
 
     //TileManager, KeyHandler, liknande managers
@@ -76,6 +79,8 @@ public class GamePanel extends JPanel implements Runnable{
     //Väljer initiell gameState
     public void setupGame() {
         gameState = menuState;
+
+        aSetter.setObject();
     }
 
     public void startGameThread() {
@@ -116,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable{
 
             //FPS counter
             if(timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+                //System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -153,6 +158,13 @@ public class GamePanel extends JPanel implements Runnable{
         else {
             // Ritar TILES, viktigt: draw tiles innan player!
             tileM.draw(g2); 
+
+            // Ritar Objekt
+            for(int i = 0; i < obj.length; i++) {
+                if(obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
+            }
 
             // Ritar PLAYER
             player.draw(g2);
