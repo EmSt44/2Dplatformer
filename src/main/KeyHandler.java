@@ -29,6 +29,13 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_P) {
                 gp.gameState = gp.playState;
             }
+
+            //Quit to menu
+            if(code == KeyEvent.VK_Q) {
+                gp.gameState = gp.menuState;
+                gp.ui.menuScreen = gp.ui.mainScreen;
+                gp.ui.commandNum = 0;
+            }
         }
         //Knapptryck i playState
         else if(gp.gameState == gp.playState) {
@@ -58,9 +65,69 @@ public class KeyHandler implements KeyListener {
         //Knapptryck i menuState
         else if(gp.gameState == gp.menuState) {
 
-            if(code == KeyEvent.VK_SPACE) {
-                gp.gameState = gp.playState;
+           //MainScreen
+           if(gp.ui.menuScreen == gp.ui.mainScreen) {
+             if(code == KeyEvent.VK_ENTER) {
+                if(gp.ui.commandNum == 0) {
+                    gp.ui.menuScreen = gp.ui.mapSelectScreen;
+                }
+                else if(gp.ui.commandNum == 1) {
+                    System.exit(0);
+                }
             }
+
+            if(code == KeyEvent.VK_W) {
+                if(gp.ui.commandNum == 0) {
+                    //do nothing
+                }
+                else {
+                    gp.ui.commandNum -= 1;
+                }
+            }
+
+            if(code == KeyEvent.VK_S) {
+                if(gp.ui.commandNum == 1) {
+                    //do nothing
+                }
+                else {
+                    gp.ui.commandNum += 1;
+                }
+            }
+           }
+           //MapSelectScreen
+           else if(gp.ui.menuScreen == gp.ui.mapSelectScreen) {
+
+            if(code == KeyEvent.VK_ENTER) {
+                if(gp.ui.commandNum == gp.tileM.mapsAmount) {
+                    gp.ui.menuScreen = gp.ui.mainScreen;
+                    gp.ui.commandNum = 0;
+                }
+                else { //starta valda mapen
+                    gp.tileM.loadMap(gp.ui.commandNum);
+                    gp.aSetter.resetAssetSetter();
+                    gp.player.resetPlayer();
+                    gp.gameState = gp.playState;
+                }
+            }
+
+            if(code == KeyEvent.VK_W) {
+                if(gp.ui.commandNum == 0) {
+                    //do nothing
+                }
+                else {
+                    gp.ui.commandNum -= 1;
+                }
+            }
+
+            if(code == KeyEvent.VK_S) {
+                if(gp.ui.commandNum == gp.tileM.mapsAmount) {
+                    //do nothing
+                }
+                else {
+                    gp.ui.commandNum += 1;
+                }
+            }
+           }
 
         }
 

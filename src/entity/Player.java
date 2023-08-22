@@ -23,7 +23,9 @@ public class Player extends Entity{
 
     public final int screenX;
     public final int screenY;
-    int hasKey = 0;
+
+    //Hur många nycklar spelaren har
+    int hasKey;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -57,6 +59,9 @@ public class Player extends Entity{
         //Player Status (liv)
         maxLife = 6; //bör vara jämnt
         life = maxLife; //Börja med max liv
+
+        //Player "inventory"
+        hasKey = 0;
     }
 
     public void getPlayerImage() {

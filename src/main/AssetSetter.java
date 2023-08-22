@@ -9,7 +9,6 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
-        this.setNPC();
     }
 
     public void setNPC() {
@@ -33,6 +32,11 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         gp.obj[2].worldX = gp.tileSize * 4;
         gp.obj[2].worldY = gp.tileSize * 33;
 
+    }
+
+    public void resetAssetSetter() {
+        setNPC();
+        setObject();
     }
     
 }
