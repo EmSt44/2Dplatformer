@@ -3,15 +3,15 @@ package main;
 import entity.Entity;
 //import tile.TileManager;
 
-public class CollisionCheker {
+public class CollisionChecker {
     GamePanel gp;
 
 
-    public CollisionCheker(GamePanel gp){
+    public CollisionChecker(GamePanel gp){
         this.gp = gp;
     }
 
-    //checks collision for all entities not just the player
+    //checks collision for all entities not just the player. does not account for gravity. depends on it's direction
     public void checkTile(Entity entity){
 
         int entityLeftX = entity.worldX + entity.solidArea.x;
@@ -44,7 +44,7 @@ public class CollisionCheker {
                 }
                 break;
             case "left":
-                entityLeftCol = (entityLeftX+ entity.speed) / gp.tileSize;
+                entityLeftCol = (entityLeftX - entity.speed) / gp.tileSize;
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                 if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {

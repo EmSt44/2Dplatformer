@@ -54,8 +54,10 @@ try {
      tile[6] = new Tile();
      tile[6].image = ImageIO.read(new File("res/tiles/brickwall_lamp.png"));
 
+
      tile[7] = new Tile();
      tile[7].image = ImageIO.read(new File("res/tiles/brickwall_grasswalk.png"));
+     tile[7].collision = true;
 
      tile[8] = new Tile();
      tile[8].image = ImageIO.read(new File("res/tiles/sky.png"));

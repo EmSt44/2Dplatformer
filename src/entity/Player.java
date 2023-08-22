@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import main.VerticalCollisionChecker;
 import main.KeyHandler;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -14,6 +15,14 @@ import javax.imageio.ImageIO;
 public class Player extends Entity{
 
     KeyHandler keyH;
+    VerticalCollisionChecker verticalChecker; //kanske ha i gamepanel?
+
+    //hopp-associerade ackumlatorer och variabler
+    double accumulatedFallSpeed = 1.0;
+    double upSpeed = 0.0;
+    public double jumpPower = 20.0; //ändra denna för att ändra hoppets initiella styrka.
+    public double jumpFalloff = 1.0; //ändra denna för att ändra hur snabbt hoppet decelerar
+    public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
 
     public final int screenX;
     public final int screenY;
@@ -36,6 +45,8 @@ public class Player extends Entity{
         solidArea.height = 32;
 
         getPlayerImage();
+
+        this.verticalChecker = new VerticalCollisionChecker(gp);
 
     }
     public void setDefaultValues() {
@@ -60,85 +71,71 @@ public class Player extends Entity{
     }
 
     public void update() {
-        
-    
-
-    
-
-    //if collision is false player can move
+        //if collision is false player can move
 
 
-    //change this to an entity
-    this.collisionOn = false;
-    gp.checker.checkTile(this);
-    if(keyH.upPressed == true) {
-        direction = "up";
-        worldY = collisionOn ? worldY : worldY - speed;
-    }
-    if(keyH.downPressed == true) {
-        direction = "down";
-        worldY = collisionOn ? worldY : worldY + speed;
-    }
-    if(keyH.leftPressed == true) {
-        direction = "left";
-        worldX = collisionOn ? worldX : worldX - speed;
-    }
-    if(keyH.rightPressed == true) {
-        direction = "right";
-        worldX = collisionOn ? worldX : worldX + speed;
-    }
-
-        // if (this.collisionOn == false){
-            // switch (direction){
-            //     case "up":
-            //         worldY -= speed;
-            //         break;
-            //     case "down":
-            //         worldY += speed;
-            //         break;
-            //     case "left":
-            //         worldX -= speed;
-            //         break;
-            //     case "right":
-            //         worldX += speed;
-            //         break;
-            //  }
-            // }
-
-        //     boolean check = false;
-        //     worldY += ((-3) * jumpAnimation) + (1 * animationTime);
-        //     animationTime++;
-        //     if(jumpAnimation <= 7 && !check) {
-        //         jumpAnimation++;
-        //     }
-        //     else if(check) {
-        //         jumpAnimation--;
-        //     }
-        //     else if(jumpAnimation == 7) {
-        //         check = true;
-        //     }
-            
-        //     if(worldY > gp.tileSize * 48) {
-        //         keyH.upPressed = false;
-        //         worldY = gp.tileSize * 48;
-        //         animationTime = 0;
-        //         jumpAnimation = 0;
-        //     }
-
-        //     //y -= speed;
-        //     /*if(isJumping){
-        //         verticalVelocity = initialVelocity*sin(angle) - g*animationTime;
-        //         animationTime += TIME_STEP;
-        //     }*/
+        //change this to an entity
+        this.collisionOn = false;
+        // if(keyH.upPressed == true) {
+        //     direction = "up";
+        //     gp.checker.checkTile(this);
+        //     worldY = collisionOn ? worldY : worldY - speed;
         // }
-        // if(keyH.leftPressed == true) {
-        //     worldX -= speed;
-        //     direction = "left";
+        // if(keyH.downPressed == true) {
+        //     direction = "down";
+        //     gp.checker.checkTile(this);
+        //     worldY = collisionOn ? worldY : worldY + speed;
         // }
-        // if(keyH.rightPressed == true) {
-        //     worldX += speed;
-        //     direction = "right";
+        if(keyH.leftPressed == true) {
+            direction = "left";
+            gp.checker.checkTile(this);
+            worldX = collisionOn ? worldX : worldX - speed;
+        }
+        if(keyH.rightPressed == true) {
+            direction = "right";
+            gp.checker.checkTile(this);
+            worldX = collisionOn ? worldX : worldX + speed;
+        }
         
+
+        //om man inte står på marken och inte hoppar uppåt så ska man falla
+        if (upSpeed <= 0) { 
+            if (!verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) {
+                this.worldY += accumulatedFallSpeed;
+                accumulatedFallSpeed += gravityModifier;
+            }
+            else {
+                //återställ fall speed när man står på marken
+                accumulatedFallSpeed = 1;
+                while (!verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
+                    this.worldY += accumulatedFallSpeed;
+                }
+            }
+        }
+
+        //om man trycker upp, står på marken, inte faller, och hoppar inte just nu, hoppa
+        if (accumulatedFallSpeed <= 1 && verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) {
+            if (keyH.upPressed == true && upSpeed <= 0) {
+                upSpeed = jumpPower;
+                accumulatedFallSpeed = 1;
+            }
+        }
+        
+        //medans hopp är aktivt
+        if (upSpeed > 0) {
+            if (!verticalChecker.checkHeadCollision(this, (int) upSpeed)) {
+                this.worldY -= upSpeed;
+                upSpeed -= jumpFalloff;
+            } 
+            else {
+                //nollställ jump speed om man slår i tak
+                upSpeed = 0;
+                while (!verticalChecker.checkHeadCollision(this, 1)) { //av nån anledning verkar detta kodblock aldrig nås?
+                    worldY--;
+                    System.out.println("aj mitt huvud 2");
+                }
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
