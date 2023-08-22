@@ -1,7 +1,6 @@
 package entity;
 
 import main.GamePanel;
-import main.VerticalCollisionChecker;
 import main.KeyHandler;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,7 +14,6 @@ import javax.imageio.ImageIO;
 public class Player extends Entity{
 
     KeyHandler keyH;
-    VerticalCollisionChecker verticalChecker; //kanske ha i gamepanel?
 
     //hopp-associerade ackumlatorer och variabler
     double accumulatedFallSpeed = 1.0;
@@ -45,9 +43,7 @@ public class Player extends Entity{
         solidArea.height = 32;
 
         getPlayerImage();
-
-        this.verticalChecker = new VerticalCollisionChecker(gp);
-
+        
     }
     public void setDefaultValues() {
 
@@ -100,21 +96,21 @@ public class Player extends Entity{
 
         //om man inte står på marken och inte hoppar uppåt så ska man falla
         if (upSpeed <= 0) { 
-            if (!verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) {
+            if (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
                 this.worldY += accumulatedFallSpeed;
                 accumulatedFallSpeed += gravityModifier;
             }
             else {
                 //återställ fall speed när man står på marken
                 accumulatedFallSpeed = 1;
-                while (!verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
+                while (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
                     this.worldY += accumulatedFallSpeed;
                 }
             }
         }
 
         //om man trycker upp, står på marken, inte faller, och hoppar inte just nu, hoppa
-        if (accumulatedFallSpeed <= 1 && verticalChecker.checkFeetCollision(this, (int) accumulatedFallSpeed)) {
+        if (accumulatedFallSpeed <= 1 && gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
             if (keyH.upPressed == true && upSpeed <= 0) {
                 upSpeed = jumpPower;
                 accumulatedFallSpeed = 1;
@@ -123,14 +119,14 @@ public class Player extends Entity{
         
         //medans hopp är aktivt
         if (upSpeed > 0) {
-            if (!verticalChecker.checkHeadCollision(this, (int) upSpeed)) {
+            if (!gp.checker.checkTileAbove(this, (int) upSpeed)) {
                 this.worldY -= upSpeed;
                 upSpeed -= jumpFalloff;
             } 
             else {
                 //nollställ jump speed om man slår i tak
                 upSpeed = 0;
-                while (!verticalChecker.checkHeadCollision(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
+                while (!gp.checker.checkTileAbove(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
                     worldY--;
                 }
             }

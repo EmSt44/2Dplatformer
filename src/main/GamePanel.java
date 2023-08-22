@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //Entity, objekt
     public Player player = new Player(this, keyH);
-    public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
+    public Entity npc[] = new Entity[10]; //maximal mängd aktiva NPC på en gång. Öka siffran för att ändra.
 
     //TileManager, KeyHandler, liknande managers
     TileManager tileM = new TileManager(this);
