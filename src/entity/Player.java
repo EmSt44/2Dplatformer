@@ -16,8 +16,9 @@ public class Player extends Entity{
     KeyHandler keyH;
 
     //hopp-associerade ackumlatorer och variabler
-    double accumulatedFallSpeed = 1.0;
-    double upSpeed = 0.0;
+    public boolean gravity = true;
+    public double accumulatedFallSpeed = 1.0;
+    public double upSpeed = 0.0;
     public double jumpPower = 20.0; //ändra denna för att ändra hoppets initiella styrka.
     public double jumpFalloff = 1.0; //ändra denna för att ändra hur snabbt hoppet decelerar
     public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
@@ -46,6 +47,9 @@ public class Player extends Entity{
         solidArea.width = 32;
         solidArea.height = 32;
 
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         getPlayerImage();
         
     }
@@ -62,12 +66,8 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
         try {
-            // left = ImageIO.read(getClass().getResourceAsStream("../../res/player/ninja_l.png"));
-            // right = ImageIO.read(getClass().getResourceAsStream("../../res/player/ninja_r.png"));
-
             left = ImageIO.read(new File("res/player/ninja_l.png"));
             right = ImageIO.read(new File("res/player/ninja_r.png"));
-
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -75,76 +75,75 @@ public class Player extends Entity{
     }
 
     public void update() {
-        //if collision is false player can move
 
-
-        //change this to an entity
+        //VÄNSTER-HÖGER RÖRELSE
         this.collisionOn = false;
+
         int objIndex;
 
-        // if(keyH.upPressed == true) {
-        //     direction = "up";
-        //     gp.checker.checkTile(this);
-        //     worldY = collisionOn ? worldY : worldY - speed;
-        // }
-        // if(keyH.downPressed == true) {
-        //     direction = "down";
-        //     gp.checker.checkTile(this);
-        //     worldY = collisionOn ? worldY : worldY + speed;
-        // }
         if(keyH.leftPressed == true) {
             direction = "left";
-            gp.checker.checkTile(this);
-            objIndex = gp.checker.checkObject(this, true);
+
+            gp.cChecker.checkTile(this);
+            objIndex = gp.cChecker.checkObject(this, true);
+            
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX - speed;
         }
         if(keyH.rightPressed == true) {
             direction = "right";
-            gp.checker.checkTile(this);
-            objIndex = gp.checker.checkObject(this, true);
+
+            gp.cChecker.checkTile(this);
+            objIndex = gp.cChecker.checkObject(this, true);
+            
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX + speed;
         }
         
-
+        //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
         if (upSpeed <= 0) { 
-            if (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
+            if (!gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
                 this.worldY += accumulatedFallSpeed;
                 accumulatedFallSpeed += gravityModifier;
             }
             else {
                 //återställ fall speed när man står på marken
                 accumulatedFallSpeed = 1;
-                while (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
+                while (!gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
                     this.worldY += accumulatedFallSpeed;
                 }
             }
         }
 
+        //RÖRELSE UPPÅT (HOPPA)
         //om man trycker upp, står på marken, inte faller, och hoppar inte just nu, hoppa
-        if (accumulatedFallSpeed <= 1 && gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
+        if (accumulatedFallSpeed <= 1 && gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
             if (keyH.upPressed == true && upSpeed <= 0) {
                 upSpeed = jumpPower;
                 accumulatedFallSpeed = 1;
             }
         }
-        
         //medans hopp är aktivt
         if (upSpeed > 0) {
-            if (!gp.checker.checkTileAbove(this, (int) upSpeed)) {
+            if (!gp.cChecker.checkTileAbove(this, (int) upSpeed)) {
                 this.worldY -= upSpeed;
                 upSpeed -= jumpFalloff;
             } 
             else {
                 //nollställ jump speed om man slår i tak
                 upSpeed = 0;
-                while (!gp.checker.checkTileAbove(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
+                while (!gp.cChecker.checkTileAbove(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
                     worldY--;
                 }
             }
         }
+
+        //NPC KOLLISION
+        int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+        if (npcIndex != 999) System.out.println(npcIndex);
+
+
     }
 
     public void pickUpObject(int i) {

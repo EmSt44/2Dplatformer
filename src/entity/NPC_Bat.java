@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -15,6 +16,14 @@ public class NPC_Bat extends Entity{
         direction = "right";
         speed = 3;
         //när collision finns lägg till hitbox här
+        solidArea = new Rectangle();
+        solidArea.x = 1;
+        solidArea.y = 4;
+        solidArea.width = 14;
+        solidArea.height = 8;
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     public void getImage() {

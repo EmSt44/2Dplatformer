@@ -15,13 +15,20 @@ public class Entity{
 
     public String direction = "right"; //höger som default direction
     public Rectangle solidArea;
+
     public int solidAreaDefaultX, solidAreaDefaultY;
+
     public boolean collisionOn = false;
 
     public BufferedImage left, right;
 
-    public int animationTime = 0;
-    public int jumpAnimation = 1;
+    //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
+    //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
+    public boolean gravity = false;
+
+    //Endast relevanta då gravity = true, bör alltid initialiseras 1 respektive 0
+    public double accumulatedFallSpeed = 1.0;
+    public double upSpeed = 0.0;
 
     //Entity status (liv)
     public int maxLife;
@@ -62,7 +69,11 @@ public class Entity{
     public void update() {
         
         setAction();
-        //collison detection bör också hända här.
+
+        //Kollisionsdetektering
+        gp.cChecker.checkTile(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        // gp.cChecker.checkPlayer(this);
     }
 
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
