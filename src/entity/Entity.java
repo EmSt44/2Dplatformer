@@ -20,7 +20,7 @@ public class Entity{
 
     public boolean collisionOn = false;
 
-    public BufferedImage left1, right1, left2, right2;
+    public BufferedImage left1, right1, left2, right2, up1, up2, down1, down2;
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public int actionLockCounter = 0;
@@ -61,6 +61,20 @@ public class Entity{
             if(spriteNum == 2) {
                 image = right2;
             }
+        } else if (direction == "up") {
+            if(spriteNum == 1){
+                image = up1;
+            }
+            if(spriteNum == 2) {
+                image = up2;
+            }
+        } else if (direction == "down") {
+            if(spriteNum == 1){
+                image = down1;
+            }
+            if(spriteNum == 2) {
+                image = down2;
+            }
         } else { //höger som standard, om ingen direction
             image = right1;
         }
@@ -75,8 +89,8 @@ public class Entity{
            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 
-                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-           }
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
     }
 
     public void update() {
