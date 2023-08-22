@@ -15,6 +15,7 @@ public class Entity{
 
     public String direction = "right"; //höger som default direction
     public Rectangle solidArea;
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
 
     public BufferedImage left, right;
