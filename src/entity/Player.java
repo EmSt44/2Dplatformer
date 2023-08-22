@@ -2,7 +2,6 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -153,5 +152,9 @@ public class Player extends Entity{
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void resetPlayer() {
+        setDefaultValues();
     }
 }
