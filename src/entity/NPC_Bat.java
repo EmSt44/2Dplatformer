@@ -38,20 +38,23 @@ public class NPC_Bat extends Entity{
     }
 
     public void setAction() {
-        if (this.direction == "left") {
-            this.worldX -= speed;
-        } else if (this.direction == "right") {
-            this.worldX += speed;
-        }
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
         
         behaviorCycle++;
-        if (behaviorCycle >= 120) { //byta håll efter 120 frames
+        if (collisionOn ||behaviorCycle >= 120) { //byta håll efter 120 frames eller tile kollision
             if (this.direction == "right") {
                 this.direction = "left";
             } else if (this.direction == "left") {
                 this.direction = "right";
             }
             behaviorCycle = 0;
+        }
+
+        if (this.direction == "left") {
+            this.worldX -= speed;
+        } else if (this.direction == "right") {
+            this.worldX += speed;
         }
     }
 }
