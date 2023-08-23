@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
+import entity.Entity;
 import object.OBJ_heart;
-import object.SuperObject;
 
 public class UI extends JPanel {
     
@@ -36,7 +36,7 @@ public class UI extends JPanel {
         arial_20 = new Font("Arial", Font.PLAIN, 20);
 
         //Skapa alla HUD objekt
-        SuperObject heart = new OBJ_heart(gp);
+        Entity heart = new OBJ_heart(gp);
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_empty = heart.image3;

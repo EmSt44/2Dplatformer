@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;   
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-
+import java.util.*;
+import java.lang.Integer;
 import javax.swing.JPanel;
-
 import entity.*;
 import tile.TileManager;
 import visual.*;
@@ -34,12 +34,14 @@ public class GamePanel extends JPanel implements Runnable{
     //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
     //KeyHandler
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
 
     //Entity, objekt, etc
     public Player player = new Player(this, keyH);
     public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
-    public SuperObject obj[] = new SuperObject[10]; //maximal mängd olika Objekt du kan ha på mappen.
+    public Entity obj[] = new Entity[10]; //maximal mängd olika Objekt du kan ha på mappen.
+    public ArrayList<Entity> projectileList = new ArrayList<>();
+    ArrayList<Entity> entityList = new ArrayList<>();
     public VisualEffect vis[] = new VisualEffect[10]; //maximal mängd olika visuella effekter (partiklar etc) som pågår på en gång
 
     //TileManager, KeyHandler, liknande managers
@@ -144,10 +146,20 @@ public class GamePanel extends JPanel implements Runnable{
             // Uppdatera visuella effekter (minska lifetime)
             for(int i = 0; i < vis.length; i++) {
                 if (vis[i] != null) {
-                vis[i].update();
+                    vis[i].update();
                 }
             }
 
+            for(int i = 0; i < projectileList.size(); i++){
+                if(projectileList.get(i) != null) {
+                    if(projectileList.get(i).life > 0) {
+                        projectileList.get(i).update();
+                    }
+                    if(projectileList.get(i).life == 0) {
+                        projectileList.remove(i);
+                    }
+                }
+            }
         } else if(gameState == pauseState) { //spelet är pausat
             //gör inget
         }
@@ -172,29 +184,57 @@ public class GamePanel extends JPanel implements Runnable{
             // Ritar TILES, viktigt: draw tiles innan player!
             tileM.draw(g2); 
 
-            // Ritar Objekt
-            for(int i = 0; i < obj.length; i++) {
-                if(obj[i] != null) {
-                    obj[i].draw(g2, this);
-                }
-            }
+            // Lägg till entities till entitylistan
+            entityList.add(player);
 
-            // Ritar PLAYER
-            player.draw(g2);
-
-            // Ritar NPC
+            // Ritar npc
             for(int i = 0; i < npc.length; i++) {
-                if (npc[i] != null) {
-                npc[i].draw(g2);
+                if(npc[i] != null){
+                    entityList.add(npc[i]);
                 }
             }
-
+            // Ritar object
+            for(int i = 0; i < obj.length; i++) {
+                if(obj[i] != null){
+                    entityList.add(obj[i]);
+                }
+            }
             // Ritar visuella effekter
+            /*
             for(int i = 0; i < vis.length; i++) {
                 if (vis[i] != null) {
-                vis[i].draw(g2);
+                    vis[i].draw(g2);
+                }
+            }*/
+            for(int i = 0; i < vis.length; i++) {
+                if(vis[i] != null){
+                    entityList.add(vis[i]);
                 }
             }
+            for(int i = 0; i < projectileList.size(); i++) {
+                if(projectileList.get(i) != null) {
+                    entityList.add(projectileList.get(i));
+                }
+            }
+
+            // Sortera
+            Collections.sort(entityList, new Comparator<Entity>(){
+
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    
+                    int result = Integer.compare(e1.worldY, e2.worldY);
+                    return result;
+                }
+            });
+
+            //Rita entities
+            for(int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2);
+            }
+
+            //Töm entity listan
+            entityList.clear();
 
             //rita UI
             ui.draw(g2);

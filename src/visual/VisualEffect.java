@@ -3,9 +3,10 @@ package visual;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import main.GamePanel;
+import entity.Entity;
 
 //nån slags visuell effekt, typ partikel eller icke-interagerbar animation
-public abstract class VisualEffect {
+public class VisualEffect extends Entity{
     public BufferedImage image; //man kan vilja ha fler än en image för animationer
     public GamePanel gp;
 
@@ -21,6 +22,7 @@ public abstract class VisualEffect {
     //till skillnad från entity skapas visualeffect bara i runtime och därför 
     //sätts in i första null plats i vis arrayen direkt vid skapelse
     public VisualEffect(GamePanel gp, int worldX, int worldY) {
+        super(gp);
         this.gp = gp;
         this.worldX = worldX;
         this.worldY = worldY;
