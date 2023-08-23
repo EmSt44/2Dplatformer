@@ -28,6 +28,7 @@ public class NPC_Bat extends Entity{
         life = 1;
         maxLife = 1;
         damage = 1;
+        stompable = true;
     }
 
     public void getImage() {
@@ -48,7 +49,7 @@ public class NPC_Bat extends Entity{
         gp.cChecker.checkTile(this);
         
         behaviorCycle++;
-        if (collisionOn ||behaviorCycle >= 120) { //byta håll efter 120 frames eller tile kollision
+        if (collisionOn || behaviorCycle >= 120) { //byta håll efter 120 frames eller tile kollision
             if (this.direction == "right") {
                 this.direction = "left";
             } else if (this.direction == "left") {

@@ -2,7 +2,6 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import visual.GenericDeathSmoke;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -202,7 +201,7 @@ public class Player extends Entity{
         //npc stampningscheck
         collisionOn = false;
         damagedNpc = gp.cChecker.checkEntityBelow(this, gp.npc);
-        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0) {
+        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0 && gp.npc[damagedNpc].stompable) {
             upSpeed += 15; //kanske ändra till nån slags variabel bounceSpeed
             accumulatedFallSpeed = 1.0;
             immunityCounter += 20;
