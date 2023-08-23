@@ -50,7 +50,6 @@ public abstract class VisualEffect {
            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-            System.out.println("drawImage kallades på partikel");
         }
     }
 }
