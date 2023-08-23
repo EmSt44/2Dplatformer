@@ -50,9 +50,9 @@ public class NPC_FireSlime extends Entity{
     }
 
     public void setAction() {
-
+        //Check if slime is active
         if(active == false) {
-
+            //Slime will activate if player is close enough
             if(this.worldX - (gp.tileSize * 2) > gp.player.worldX - gp.player.screenX &&
                this.worldX + (gp.tileSize * 2) < gp.player.worldX + gp.player.screenX &&
                this.worldY - (gp.tileSize * 2) > gp.player.worldY - gp.player.screenY &&
@@ -62,6 +62,7 @@ public class NPC_FireSlime extends Entity{
             }
         }
         else if(active == true) {
+            //When active check if the slime has fallen to the ground, otherwise fall with animation
             if(onGround == false) {
                 if (upSpeed <= 0) { 
                     this.direction = "down";
@@ -86,7 +87,8 @@ public class NPC_FireSlime extends Entity{
                     }
                 }
             }
-            else if(onGround == true) {
+            else if(onGround == true) { 
+                //Slime has hit the ground and will follow player but fix position to not walk through walls
                 actionLockCounter++;
 
                 if(actionLockCounter == 10){
@@ -103,30 +105,28 @@ public class NPC_FireSlime extends Entity{
                 collisionOn = false;
                 gp.cChecker.checkTile(this);
 
-                if(gp.player.worldX < this.worldX){
-                    if(collisionOn == true) {
+                if(collisionOn == true){
+                    if(collisionFix < 1){
+                        if(direction == "right"){
+                            direction = "left";
+                        }
+                        else if(direction == "left"){
+                            direction = "right";
+                        }
                         collisionFix++;
-                        this.direction = "right";
-                    }
-                    else if(collisionFix < 1){
-                        this.direction = "left";
-                    }
-                    else if(collisionFix == 1){
-                        collisionFix = 0;
-                    }   
-                }
-                else if(gp.player.worldX > this.worldX) {
-                    if(collisionOn == true) {
-                        collisionFix++;
-                        this.direction = "left";
-                    }
-                    else if(collisionFix <= 0){
-                        this.direction = "right";
-                    }
-                    else if(collisionFix == 1){
-                        collisionFix = 0;
                     }
                 }
+                else if(collisionFix == 1){
+                    collisionFix--;
+                }
+                else if(gp.player.worldX < this.worldX) {
+                    direction = "left";
+                }
+                else if(gp.player.worldX > this.worldX){
+                    direction = "right";
+                }
+
+                System.out.println("");
 
                 //RÖRELSE NEDÅT (FALLA)
                 //om man inte står på marken och inte hoppar uppåt så ska man falla
