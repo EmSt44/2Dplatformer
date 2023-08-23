@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 import java.util.*;
 import java.lang.Integer;
 import javax.swing.JPanel;
-
 import entity.*;
 import tile.TileManager;
 import visual.*;
@@ -147,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable{
             // Uppdatera visuella effekter (minska lifetime)
             for(int i = 0; i < vis.length; i++) {
                 if (vis[i] != null) {
-                vis[i].update();
+                    vis[i].update();
                 }
             }
 
@@ -188,14 +187,22 @@ public class GamePanel extends JPanel implements Runnable{
             // Lägg till entities till entitylistan
             entityList.add(player);
 
+            // Ritar npc
             for(int i = 0; i < npc.length; i++) {
                 if(npc[i] != null){
                     entityList.add(npc[i]);
                 }
             }
+            // Ritar object
             for(int i = 0; i < obj.length; i++) {
                 if(obj[i] != null){
                     entityList.add(obj[i]);
+                }
+            }
+            // Ritar visuella effekter
+            for(int i = 0; i < vis.length; i++) {
+                if(vis[i] != null){
+                    entityList.add(vis[i]);
                 }
             }
             for(int i = 0; i < projectileList.size(); i++) {
@@ -215,26 +222,13 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             });
 
-            //Rita entiteter
+            //Rita entities
             for(int i = 0; i < entityList.size(); i++) {
                 entityList.get(i).draw(g2);
             }
-            //Tom entity lista
+
+            //Töm entity listan
             entityList.clear();
-
-            // Ritar NPC
-            for(int i = 0; i < npc.length; i++) {
-                if (npc[i] != null) {
-                npc[i].draw(g2);
-                }
-            }
-
-            // Ritar visuella effekter
-            for(int i = 0; i < vis.length; i++) {
-                if (vis[i] != null) {
-                vis[i].draw(g2);
-                }
-            }
 
             //rita UI
             ui.draw(g2);

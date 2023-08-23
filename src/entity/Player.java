@@ -4,7 +4,9 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Shuriken;
 
+
 import visual.GenericDeathSmoke;
+
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -207,7 +209,7 @@ public class Player extends Entity{
         //npc stampningscheck
         collisionOn = false;
         damagedNpc = gp.cChecker.checkEntityBelow(this, gp.npc);
-        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0) {
+        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0 && gp.npc[damagedNpc].stompable) {
             upSpeed += 15; //kanske ändra till nån slags variabel bounceSpeed
             accumulatedFallSpeed = 1.0;
             immunityCounter += 20;
@@ -233,10 +235,10 @@ public class Player extends Entity{
             damageAnimation--;
         }
 
-        if(gp.keyH.shootKeyPressed == true && projectile.life > 0) {
+        if(gp.keyH.shootKeyPressed == true && projectile.alive == false) {
 
             //Set default coordinates, direction and user
-            projectile.set(worldX, worldY, direction, life, this);
+            projectile.set(worldX, worldY, direction, true, this, damage);
 
             //Add to the arraylist
             gp.projectileList.add(projectile);

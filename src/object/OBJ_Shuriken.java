@@ -21,9 +21,11 @@ public class OBJ_Shuriken extends Projectile{
         solidArea.width = 24;
         solidArea.height = 24;
         name = "Shuriken";
-        speed = 1;
-        maxLife = 1;
+        speed = 6;
+        maxLife = 500;
         life = maxLife;
+        alive = false;
+        damage = 1;
         getImage();
         
     }

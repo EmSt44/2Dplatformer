@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import visual.GenericDeathSmoke;
-import visual.VisualEffect;
 
 public class Entity{
 
@@ -29,6 +28,7 @@ public class Entity{
     public BufferedImage image, image2, image3;
     public String name;
     public boolean collision = false;
+    public boolean alive;
 
     //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
     //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
@@ -45,6 +45,8 @@ public class Entity{
 
     //Hur mycket skada fienden gör vid kontakt
     public int damage;
+    //Om entityn kan stampas på för att skada dem
+    public boolean stompable = false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -126,7 +128,7 @@ public class Entity{
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
 
 
-    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation osv.
+    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation.
     public void takeDamage(int damageAmount) {
         this.life -= damageAmount;
         if (life <= 0) {
