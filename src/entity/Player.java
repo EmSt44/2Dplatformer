@@ -190,8 +190,6 @@ public class Player extends Entity{
         if (immunityCounter > 0) {
             immunityCounter--;
         }
-
-
     }
 
     public void pickUpObject(int i) {
