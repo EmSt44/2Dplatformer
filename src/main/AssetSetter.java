@@ -38,23 +38,23 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
     public void setObject() {
 
-        gp.obj[0] = new OBJ_Key();
+        gp.obj[0] = new OBJ_Key(gp);
         gp.obj[0].worldX = gp.tileSize * 7;
         gp.obj[0].worldY = gp.tileSize * 47;
 
         //Set door direction
         OBJ_Door.Door_left = true;
-        gp.obj[1] = new OBJ_Door();
+        gp.obj[1] = new OBJ_Door(gp);
         gp.obj[1].worldX = gp.tileSize * 4;
         gp.obj[1].worldY = gp.tileSize * 33;
 
-        gp.obj[2] = new OBJ_Key();
+        gp.obj[2] = new OBJ_Key(gp);
         gp.obj[2].worldX = gp.tileSize * 48;
         gp.obj[2].worldY = gp.tileSize * 10;
 
         //Set door direction
         OBJ_Door.Door_left = false;
-        gp.obj[3] = new OBJ_Door();
+        gp.obj[3] = new OBJ_Door(gp);
         gp.obj[3].worldX = gp.tileSize * (49 - 14);
         gp.obj[3].worldY = gp.tileSize * 3;
     }

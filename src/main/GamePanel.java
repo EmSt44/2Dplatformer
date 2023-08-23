@@ -5,7 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;   
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-
+import java.util.*;
+import java.lang.Integer;
 import javax.swing.JPanel;
 
 import entity.*;
@@ -33,12 +34,14 @@ public class GamePanel extends JPanel implements Runnable{
     //Video #5 11:32 changes needed to be done with draw to have a camera focused on the character
 
     //KeyHandler
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
 
     //Entity, objekt
     public Player player = new Player(this, keyH);
     public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
-    public SuperObject obj[] = new SuperObject[10]; //maximal mängd olika Objekt du kan ha på mappen.
+    public Entity obj[] = new Entity[10]; //maximal mängd olika Objekt du kan ha på mappen.
+    public ArrayList<Entity> projectileList = new ArrayList<>();
+    ArrayList<Entity> entityList = new ArrayList<>();
 
     //TileManager, KeyHandler, liknande managers
     TileManager tileM = new TileManager(this);
@@ -132,6 +135,16 @@ public class GamePanel extends JPanel implements Runnable{
                     npc[i].update();
                 }
             }
+            for(int i = 0; i < projectileList.size(); i++){
+                if(projectileList.get(i) != null) {
+                    if(projectileList.get(i).life > 0) {
+                        projectileList.get(i).update();
+                    }
+                    if(projectileList.get(i).life == 0) {
+                        projectileList.remove(i);
+                    }
+                }
+            }
         } else if(gameState == pauseState) { //spelet är pausat
             //gör inget
         }
@@ -153,15 +166,44 @@ public class GamePanel extends JPanel implements Runnable{
             // Ritar TILES, viktigt: draw tiles innan player!
             tileM.draw(g2); 
 
-            // Ritar Objekt
+            // Lägg till entities till entitylistan
+            entityList.add(player);
+
+            for(int i = 0; i < npc.length; i++) {
+                if(npc[i] != null){
+                    entityList.add(npc[i]);
+                }
+            }
             for(int i = 0; i < obj.length; i++) {
-                if(obj[i] != null) {
-                    obj[i].draw(g2, this);
+                if(obj[i] != null){
+                    entityList.add(obj[i]);
+                }
+            }
+            for(int i = 0; i < projectileList.size(); i++) {
+                if(projectileList.get(i) != null) {
+                    entityList.add(projectileList.get(i));
                 }
             }
 
-            // Ritar PLAYER
-            player.draw(g2);
+            // Sortera
+            Collections.sort(entityList, new Comparator<Entity>(){
+
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    
+                    int result = Integer.compare(e1.worldY, e2.worldY);
+                    return result;
+                }
+            });
+
+            //Rita entiteter
+            for(int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2);
+            }
+            //Tom entity lista
+            for(int i = 0; i < entityList.size(); i++) {
+                entityList.remove(i);
+            }
 
             //rita UI
             ui.draw(g2);
