@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import main.GamePanel;
-import entity.Player;
 
 public class NPC_FireSlime extends Entity{
 
@@ -22,7 +21,7 @@ public class NPC_FireSlime extends Entity{
         getImage();
         direction = "up";
         speed = 15;
-        //när collision finns lägg till hitbox här
+
         solidArea = new Rectangle();
         solidArea.x = 16;
         solidArea.y = 16;
@@ -31,6 +30,9 @@ public class NPC_FireSlime extends Entity{
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        damage = 1;
+        stompable = false;
     }
 
     public void getImage() {

@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import visual.GenericDeathSmoke;
-import visual.VisualEffect;
 
 public class Entity{
 
@@ -45,6 +44,8 @@ public class Entity{
 
     //Hur mycket skada fienden gör vid kontakt
     public int damage;
+    //Om entityn kan stampas på för att skada dem
+    public boolean stompable = false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -126,7 +127,7 @@ public class Entity{
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
 
 
-    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation osv.
+    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation.
     public void takeDamage(int damageAmount) {
         this.life -= damageAmount;
         if (life <= 0) {
