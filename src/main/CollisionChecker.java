@@ -62,78 +62,9 @@ public class CollisionChecker {
         }
     }
 
-    public int checkObject(Entity entity, boolean player) {
 
-        int index = 999;
+    public void checkTileBelow(Entity entity, int fallSpeed) { //TRUE om man står/faller på en solid tile, FALSE annars
 
-        for(int i = 0; i < gp.obj.length; i++) {
-            if(gp.obj[i] != null){
-
-                //Hämta entitetens solida områdes position
-                entity.solidArea.x = entity.worldX + entity.solidArea.x;
-                entity.solidArea.y = entity.worldY + entity.solidArea.y;
-
-                //Hämta objektets solida områdes position
-                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
-                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
-
-                switch(entity.direction) {
-                    case "up":
-                        entity.solidArea.y -= entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){
-                            if(gp.obj[i].collision == true){
-                                entity.collisionOn = true;
-                            }
-                            if(player == true){
-                                index = i;
-                            }
-                        }
-                        break;
-                    case "down":
-                        entity.solidArea.y += entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){
-                            if(gp.obj[i].collision == true){
-                                entity.collisionOn = true;
-                            }
-                            if(player == true){
-                                index = i;
-                            }
-                        }
-                        break;
-                    case "left":
-                        entity.solidArea.x -= entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){
-                            if(gp.obj[i].collision == true){
-                                entity.collisionOn = true;
-                            }
-                            if(player == true){
-                                index = i;
-                            }
-                        }
-                        break;
-                    case "right":
-                        entity.solidArea.x += entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){
-                            if(gp.obj[i].collision == true){
-                                entity.collisionOn = true;
-                            }
-                            if(player == true){
-                                index = i;
-                            }
-                        }
-                        break;
-                }
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
-            }
-        }
-
-        return index;
-    }
-
-    public boolean checkTileBelow(Entity entity, int fallSpeed) { //TRUE om man står/faller på en solid tile, FALSE annars
         int entityLeftX = entity.worldX + entity.solidArea.x;
         int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
         int entityBottomY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
@@ -148,10 +79,12 @@ public class CollisionChecker {
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
 
-        return (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true);
+        if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+            entity.collisionOn = true;
+        }
     }
 
-    public boolean checkTileAbove(Entity entity, int upSpeed) { //TRUE om toppen av hitbox slår/ska slå i en collision tile (enl upSpeed) FALSE annars
+    public void checkTileAbove(Entity entity, int upSpeed) { //TRUE om toppen av hitbox slår/ska slå i en collision tile (enl upSpeed) FALSE annars
         int entityLeftX = entity.worldX + entity.solidArea.x;
         int entityRightX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
         int entityTopY = entity.worldY + entity.solidArea.y;
@@ -166,6 +99,187 @@ public class CollisionChecker {
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
 
-        return (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true);
+        if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true) {
+            entity.collisionOn = true;
+        }
     }
+
+
+    //Kollar om entity kolliderar/kommer kollidera nästa frame med någon i target,
+    //om så är fallet, collisionOn = true och target i frågas index i NPC-listan returneras
+    public int checkEntity(Entity entity, Entity[] target) {
+        int index = 999;
+
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+
+                //Entity's hitbox plats i världen
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                //Target's hitbox plats i världen
+                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
+                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+
+                if (entity.gravity == false) {
+                    switch(entity.direction) {
+                        case "up":
+                            entity.solidArea.y -= entity.speed;
+                            break;
+                        case "down":
+                            entity.solidArea.y += entity.speed;
+                            break;
+                        case "left": 
+                            entity.solidArea.x -= entity.speed;
+                            break;
+                        case "right":
+                            entity.solidArea.x += entity.speed;
+                            break;
+                    }
+                }
+                else if (entity.gravity == true) {
+                    if (entity.upSpeed > 0.0) {
+                        entity.solidArea.y -= entity.upSpeed;
+                    }
+                    else {
+                        entity.solidArea.y += entity.accumulatedFallSpeed;
+                    }
+                    switch (entity.direction) {
+                        case "left": 
+                                entity.solidArea.x -= entity.speed;
+                                break;
+                        case "right":
+                            entity.solidArea.x += entity.speed;
+                            break;
+                    }
+                }
+
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+                    entity.collisionOn = true;
+                    index = i;
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                
+            }
+        }
+        return index;
+    }
+
+
+    //Kollar om entity kolliderar/kommer kollidera nästa frame med ett objekt i gp.obj,
+    //om så är fallet och objektet har collision, collisionOn = true och
+    //om entity är en spelare så returneras objektets index i gp.obj.
+    public int checkObject(Entity entity, boolean player) {
+
+        int index = 999;
+
+        for(int i = 0; i < gp.obj.length; i++) {
+            if(gp.obj[i] != null){
+
+                //Entity's hitbox plats i världen
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                //Ett objekt ur gp.obj's hitbox plats i världen
+                gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
+                gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+                
+                if (entity.gravity == false) {
+                    switch(entity.direction) {
+                        case "up":
+                            entity.solidArea.y -= entity.speed;
+                            break;
+                        case "down":
+                            entity.solidArea.y += entity.speed;
+                            break;
+                        case "left":
+                            entity.solidArea.x -= entity.speed;
+                            break;
+                        case "right":
+                            entity.solidArea.x += entity.speed;
+                            break;
+                    }
+                }
+                else if (entity.gravity == true) {
+                    if (entity.upSpeed > 0.0) {
+                        entity.solidArea.y -= entity.upSpeed;
+                    }
+                    else {
+                        entity.solidArea.y += entity.accumulatedFallSpeed;
+                    }
+                    switch (entity.direction) {
+                        case "left": 
+                                entity.solidArea.x -= entity.speed;
+                                break;
+                        case "right":
+                            entity.solidArea.x += entity.speed;
+                            break;
+                    }
+                }
+
+                if(entity.solidArea.intersects(gp.obj[i].solidArea)){
+                    if(gp.obj[i].collision == true){
+                        entity.collisionOn = true;
+                    }
+                    if(player == true){
+                        index = i;
+                    }
+                }
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
+                gp.obj[i].solidArea.y = gp.obj[i].solidAreaDefaultY;
+            }
+        }
+        return index;
+    }
+    
+    //Kollar om entity kolliderar/kommer kollidera nästa frame med någon i target UNDER DEN,
+    //om så är fallet, collisionOn = true och target i frågas index i NPC-listan returneras
+    //Notera att med gravity = true kollar den endast under om du faller, och gravity = false om direction = "down"
+    public int checkEntityBelow(Entity entity, Entity[] target) {
+        int index = 999;
+
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+
+                //Entity's hitbox plats i världen
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                //Target's hitbox plats i världen
+                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
+                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+
+                if (entity.gravity == false && entity.direction == "down") {
+                    entity.solidArea.y += entity.speed;
+                }               
+                else if (entity.gravity == true && entity.upSpeed < 0.0) {
+                    entity.solidArea.y += entity.accumulatedFallSpeed;
+                    // switch (entity.direction) { //osäker om denna switchcase ska vara med.
+                    //     case "left": 
+                    //             entity.solidArea.x -= entity.speed;
+                    //             break;
+                    //     case "right":
+                    //         entity.solidArea.x += entity.speed;
+                    //         break;
+                    //}
+                }                
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+                    entity.collisionOn = true;
+                    index = i;
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                
+            }
+        }
+        return index;
+    }
+
 }

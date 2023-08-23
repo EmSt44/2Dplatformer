@@ -15,13 +15,23 @@ public class Entity{
 
     public String direction = "right"; //höger som default direction
     public Rectangle solidArea;
+
     public int solidAreaDefaultX, solidAreaDefaultY;
+
     public boolean collisionOn = false;
 
-    public BufferedImage left, right;
+    public BufferedImage left1, right1, left2, right2, up1, up2, down1, down2;
+    public int spriteCounter = 0;
+    public int spriteNum = 1;
+    public int actionLockCounter = 0;
 
-    public int animationTime = 0;
-    public int jumpAnimation = 1;
+    //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
+    //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
+    public boolean gravity = false;
+
+    //Endast relevanta då gravity = true, bör alltid initialiseras 1 respektive 0
+    public double accumulatedFallSpeed = 1.0;
+    public double upSpeed = 0.0;
 
     //Entity status (liv)
     public int maxLife;
@@ -38,11 +48,35 @@ public class Entity{
         BufferedImage image = null;
 
         if (direction == "left") {
-            image = left;
+            if(spriteNum == 1){
+                image = left1;
+            }
+            if(spriteNum == 2) {
+                image = left2;
+            }
         } else if (direction == "right") {
-            image = right;
+            if(spriteNum == 1){
+                image = right1;
+            }
+            if(spriteNum == 2) {
+                image = right2;
+            }
+        } else if (direction == "up") {
+            if(spriteNum == 1){
+                image = up1;
+            }
+            if(spriteNum == 2) {
+                image = up2;
+            }
+        } else if (direction == "down") {
+            if(spriteNum == 1){
+                image = down1;
+            }
+            if(spriteNum == 2) {
+                image = down2;
+            }
         } else { //höger som standard, om ingen direction
-            image = right;
+            image = right1;
         }
 
         // g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
@@ -55,14 +89,29 @@ public class Entity{
            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 
-                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-           }
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
     }
 
     public void update() {
         
         setAction();
-        //collison detection bör också hända här.
+
+        //Kollisionsdetektering
+        gp.cChecker.checkTile(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        // gp.cChecker.checkPlayer(this);
+
+        spriteCounter++;
+        if(spriteCounter > 10) {
+            if(spriteNum == 1) {
+                spriteNum = 2;
+            }
+            else if(spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
     }
 
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser

@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
     //TileManager, KeyHandler, liknande managers
     TileManager tileM = new TileManager(this);
     AssetSetter aSetter = new AssetSetter(this);
-    public CollisionChecker checker = new CollisionChecker(this);
+    public CollisionChecker cChecker = new CollisionChecker(this);
 
     //UI
     UI ui = new UI(this);
@@ -96,7 +96,6 @@ public class GamePanel extends JPanel implements Runnable{
         long lastTime = System.nanoTime();
         long currentTime;
         long timer = 0;
-        int drawCount = 0;
 
         setupGame(); //sätter initella gamestaten
 
@@ -113,13 +112,11 @@ public class GamePanel extends JPanel implements Runnable{
                 update();
                 repaint();
                 delta--;
-                drawCount++;
             }
 
             //FPS counter
             if(timer >= 1000000000) {
                 //System.out.println("FPS: " + drawCount);
-                drawCount = 0;
                 timer = 0;
             }
         }

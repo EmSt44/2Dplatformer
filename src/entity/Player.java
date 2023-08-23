@@ -15,17 +15,23 @@ public class Player extends Entity{
     KeyHandler keyH;
 
     //hopp-associerade ackumlatorer och variabler
-    double accumulatedFallSpeed = 1.0;
-    double upSpeed = 0.0;
+    public boolean gravity = true;
+    public double accumulatedFallSpeed = 1.0;
+    public double upSpeed = 0.0;
     public double jumpPower = 20.0; //ändra denna för att ändra hoppets initiella styrka.
     public double jumpFalloff = 1.0; //ändra denna för att ändra hur snabbt hoppet decelerar
     public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
 
+    int immunityDuration = 60; //Antal frames man är immun efter att ha tagit skada
+
     public final int screenX;
     public final int screenY;
 
+
     //Hur många nycklar spelaren har
-    int hasKey;
+    int hasKey = 0;
+    int immunityCounter = 0;
+
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -38,14 +44,16 @@ public class Player extends Entity{
 
         setDefaultValues();
 
-        //ändra dessa till en mer rimlig hitbox
         solidArea = new Rectangle();
-        solidArea.x = 8;
+        solidArea.x = 15;
         solidArea.y = 8;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 32;
+        solidArea.width = 18;
         solidArea.height = 32;
+
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         getPlayerImage();
         
@@ -66,12 +74,8 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
         try {
-            // left = ImageIO.read(getClass().getResourceAsStream("../../res/player/ninja_l.png"));
-            // right = ImageIO.read(getClass().getResourceAsStream("../../res/player/ninja_r.png"));
-
-            left = ImageIO.read(new File("res/player/ninja_l.png"));
-            right = ImageIO.read(new File("res/player/ninja_r.png"));
-
+            left1 = ImageIO.read(new File("res/player/ninja_l.png"));
+            right1 = ImageIO.read(new File("res/player/ninja_r.png"));
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -79,75 +83,118 @@ public class Player extends Entity{
     }
 
     public void update() {
-        //if collision is false player can move
 
-
-        //change this to an entity
+        //VÄNSTER-HÖGER RÖRELSE
         this.collisionOn = false;
-        int objIndex;
 
-        // if(keyH.upPressed == true) {
-        //     direction = "up";
-        //     gp.checker.checkTile(this);
-        //     worldY = collisionOn ? worldY : worldY - speed;
-        // }
-        // if(keyH.downPressed == true) {
-        //     direction = "down";
-        //     gp.checker.checkTile(this);
-        //     worldY = collisionOn ? worldY : worldY + speed;
-        // }
+        int objIndex = 999;
+        int damagedNpc = 999;
+
         if(keyH.leftPressed == true) {
             direction = "left";
-            gp.checker.checkTile(this);
-            objIndex = gp.checker.checkObject(this, true);
+
+            gp.cChecker.checkTile(this);
+            objIndex = gp.cChecker.checkObject(this, true);
+            
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX - speed;
         }
         if(keyH.rightPressed == true) {
             direction = "right";
-            gp.checker.checkTile(this);
-            objIndex = gp.checker.checkObject(this, true);
+
+            gp.cChecker.checkTile(this);
+            objIndex = gp.cChecker.checkObject(this, true);
+            
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX + speed;
         }
         
-
+        //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
         if (upSpeed <= 0) { 
-            if (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
+            collisionOn = false; 
+            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+            objIndex = gp.cChecker.checkObject(this, true);
+            //check npc osv
+            if (!collisionOn) {
                 this.worldY += accumulatedFallSpeed;
                 accumulatedFallSpeed += gravityModifier;
             }
             else {
                 //återställ fall speed när man står på marken
                 accumulatedFallSpeed = 1;
-                while (!gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) { //denna så att man landar på marken och inte ovanför
+                collisionOn = false;
+                gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+                objIndex =  gp.cChecker.checkObject(this, true);
+                while (!collisionOn) { //denna så att man landar på marken och inte ovanför
                     this.worldY += accumulatedFallSpeed;
+                    gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+                    objIndex = gp.cChecker.checkObject(this, true);
                 }
             }
         }
 
+        //RÖRELSE UPPÅT (HOPPA)
         //om man trycker upp, står på marken, inte faller, och hoppar inte just nu, hoppa
-        if (accumulatedFallSpeed <= 1 && gp.checker.checkTileBelow(this, (int) accumulatedFallSpeed)) {
-            if (keyH.upPressed == true && upSpeed <= 0) {
+        if (accumulatedFallSpeed <= 1) {
+            collisionOn = false;
+            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+            objIndex = gp.cChecker.checkObject(this, true);
+            if (keyH.upPressed == true && upSpeed <= 0 && collisionOn) {
                 upSpeed = jumpPower;
                 accumulatedFallSpeed = 1;
             }
         }
-        
         //medans hopp är aktivt
         if (upSpeed > 0) {
-            if (!gp.checker.checkTileAbove(this, (int) upSpeed)) {
+            collisionOn = false;
+            gp.cChecker.checkTileAbove(this, (int) upSpeed);
+            objIndex = gp.cChecker.checkObject(this, true);
+            //npc kollison
+            if (!collisionOn) {
                 this.worldY -= upSpeed;
                 upSpeed -= jumpFalloff;
             } 
             else {
                 //nollställ jump speed om man slår i tak
-                upSpeed = 0;
-                while (!gp.checker.checkTileAbove(this, 1)) { //ser till att vi inte slår huvudet i taket. Ouch.
+                upSpeed = 1;
+                collisionOn = false;
+                while (!collisionOn) { //ser till att vi inte slår huvudet i taket. Ouch.
                     worldY--;
+                    gp.cChecker.checkTileAbove(this, (int) upSpeed);
+                    objIndex = gp.cChecker.checkObject(this, true);
+                    //npc kollision?
                 }
+                upSpeed = 0;
             }
+        }
+
+        pickUpObject(objIndex);
+
+        //NPC KOLLISION
+        //npc stampningscheck
+        collisionOn = false;
+        damagedNpc = gp.cChecker.checkEntityBelow(this, gp.npc);
+        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0) {
+            upSpeed += 15; //kanske ändra till nån slags variabel bounceSpeed
+            accumulatedFallSpeed = 1.0;
+            immunityCounter += 20;
+            gp.npc[damagedNpc].life--;
+            System.out.println("entity " + damagedNpc + " tog skada");
+        }
+        else {
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+        
+            if (npcIndex != 999 && immunityCounter == 0) {
+                life--; //för tillfället gör alla npc en skada vid kontakt
+                System.out.println("entity " + npcIndex + " gjorde skada");
+                immunityCounter = immunityDuration;
+            }
+        }
+
+        //Nedräkning av i-frames
+        if (immunityCounter > 0) {
+            immunityCounter--;
         }
     }
 
@@ -181,11 +228,11 @@ public class Player extends Entity{
         BufferedImage image = null;
 
         if (direction == "left") {
-            image = left;
+            image = left1;
         } else if (direction == "right") {
-            image = right;
+            image = right1;
         } else { //höger som standard, om ingen direction
-            image = right;
+            image = right1;
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
