@@ -2,7 +2,6 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -27,8 +26,12 @@ public class Player extends Entity{
 
     public final int screenX;
     public final int screenY;
+
+
+    //Hur många nycklar spelaren har
     int hasKey = 0;
     int immunityCounter = 0;
+
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -64,6 +67,9 @@ public class Player extends Entity{
         //Player Status (liv)
         maxLife = 6; //bör vara jämnt
         life = maxLife; //Börja med max liv
+
+        //Player "inventory"
+        hasKey = 0;
     }
 
     public void getPlayerImage() {
@@ -230,5 +236,9 @@ public class Player extends Entity{
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void resetPlayer() {
+        setDefaultValues();
     }
 }

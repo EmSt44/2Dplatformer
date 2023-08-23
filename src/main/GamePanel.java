@@ -78,8 +78,6 @@ public class GamePanel extends JPanel implements Runnable{
     //Väljer initiell gameState
     public void setupGame() {
         gameState = menuState;
-
-        aSetter.setObject();
     }
 
     public void startGameThread() {

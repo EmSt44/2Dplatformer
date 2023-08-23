@@ -17,15 +17,25 @@ GamePanel gp; //gamepanel
 public Tile[] tile;  //lista med olika typer av tiles
 public int mapTileNum[][];
 
+//Lista med alla maps, representerade som strängar av sin filepath, ex: "res/maps/map1"
+public String[] maps;
+public final int mapsAmount = 1; //maximalt antal maps VIKTIGT! detta måste korrespondera med antalet maps exakt
+
 
 public TileManager(GamePanel gp) {
 
     this.gp = gp;
     tile = new Tile[11]; //maximal mängd typer av tiles, ändra denna siffra för att lägga till fler
     mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+    maps = new String[mapsAmount]; //lista med maps med maximalantalet
 
+    getMaps();
     getTileImage();
-    loadMap();
+}
+
+public void getMaps() { //lägg till maps här
+
+    maps[0] = "res/maps/testmap4";
 }
 
 public void getTileImage() { //läser in png filer för varje tile och lägger dem i ett index i tile listan
@@ -72,12 +82,12 @@ try {
   }
  }
 
-public void loadMap() {
+public void loadMap(int mapNumber) {
 
     try {
 
     //InputStream is = getClass().getResourceAsStream("res/maps/testmap"); //läs map filen här
-    BufferedReader br = new BufferedReader(new FileReader("res/maps/testmap4"));
+    BufferedReader br = new BufferedReader(new FileReader(maps[mapNumber]));
     
     //startvärde för läsningen av kartan
     int col = 0;
