@@ -126,8 +126,6 @@ public class NPC_FireSlime extends Entity{
                     direction = "right";
                 }
 
-                System.out.println("");
-
                 //RÖRELSE NEDÅT (FALLA)
                 //om man inte står på marken och inte hoppar uppåt så ska man falla
                 if (upSpeed <= 0) { 
