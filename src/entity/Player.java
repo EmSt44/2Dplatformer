@@ -40,6 +40,7 @@ public class Player extends Entity{
     boolean jumpThisFrame = false;
     
     BufferedImage damageVisual;
+    BufferedImage r_run1, r_run2, l_run1, l_run2, flip1, flip2, r_neutral, l_neutral;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -85,8 +86,14 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
         try {
-            left1 = ImageIO.read(new File("res/player/ninja_l.png"));
-            right1 = ImageIO.read(new File("res/player/ninja_r.png"));
+            l_neutral = ImageIO.read(new File("res/player/ninja_l.png"));
+            r_neutral = ImageIO.read(new File("res/player/ninja_r.png"));
+            r_run1 = ImageIO.read(new File("res/player/ninja_run_r1.png"));
+            r_run2 = ImageIO.read(new File("res/player/ninja_run_r2.png"));
+            l_run1 = ImageIO.read(new File("res/player/ninja_run_l1.png"));
+            l_run2 = ImageIO.read(new File("res/player/ninja_run_l2.png"));
+            flip1 = ImageIO.read(new File("res/player/ninja_flip1.png"));
+            flip2 = ImageIO.read(new File("res/player/ninja_flip2.png"));
             damageVisual = ImageIO.read(new File("res/player/bloodsplatter.png"));
 
         } 
@@ -195,7 +202,7 @@ public class Player extends Entity{
                     //npc kollision?
                 }
                 upSpeed = 0;
-            }
+            }     
         }
 
         pickUpObject(objIndex);
@@ -228,6 +235,17 @@ public class Player extends Entity{
         }
         if (damageAnimation > 0) {
             damageAnimation--;
+        }
+
+        spriteCounter++;
+        if(spriteCounter > 4) {
+            if(spriteNum == 1) {
+                spriteNum = 2;
+            }
+            else if(spriteNum == 2) {
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
         }
 
         if(gp.keyH.shootKeyPressed == true && projectile.alive == false) {
@@ -268,13 +286,53 @@ public class Player extends Entity{
         // g2.fillRect(screenX, screenY, gp.tileSize, gp.tileSize);
 
         BufferedImage image = null;
-
-        if (direction == "left") {
-            image = left1;
-        } else if (direction == "right") {
-            image = right1;
-        } else { //höger som standard, om ingen direction
-            image = right1;
+        if (spriteNum == 1) {
+            if (direction == "right") {
+                if (upSpeed < 15 && upSpeed > 2) {
+                    image = flip1;
+                }
+                else if (keyH.rightPressed) {
+                    image = r_run1;
+                }
+                else {
+                    image = r_neutral;
+                }
+            }
+            else if (direction == "left") {
+                if (upSpeed < 15 && upSpeed > 2) {
+                    image = flip1;
+                }
+                else if (keyH.leftPressed) {
+                    image = l_run1;
+                }
+                else {
+                    image = l_neutral;
+                }
+            }
+        }
+        else if (spriteNum == 2) {
+            if (direction == "right") {
+                if (upSpeed < 15 && upSpeed > 2) {
+                    image = flip2;
+                }
+                else if (keyH.rightPressed) {
+                    image = r_run2;
+                }
+                else {
+                    image = r_neutral;
+                }
+            }
+            else if (direction == "left") {
+                if (upSpeed < 15 && upSpeed > 2) {
+                    image = flip2;
+                }
+                else if (keyH.leftPressed) {
+                    image = l_run2;
+                }
+                else {
+                    image = l_neutral;
+                }
+            }
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
