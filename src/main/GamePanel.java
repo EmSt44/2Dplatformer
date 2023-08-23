@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import entity.*;
 import tile.TileManager;
+import visual.*;
 import object.*;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -35,10 +36,11 @@ public class GamePanel extends JPanel implements Runnable{
     //KeyHandler
     KeyHandler keyH = new KeyHandler(this);
 
-    //Entity, objekt
+    //Entity, objekt, etc
     public Player player = new Player(this, keyH);
     public Entity npc[] = new Entity[10]; //maximal mängd olika NPC. Öka siffran för att ändra.
     public SuperObject obj[] = new SuperObject[10]; //maximal mängd olika Objekt du kan ha på mappen.
+    public VisualEffect vis[] = new VisualEffect[10]; //maximal mängd olika visuella effekter (partiklar etc) som pågår på en gång
 
     //TileManager, KeyHandler, liknande managers
     TileManager tileM = new TileManager(this);
@@ -138,8 +140,15 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                  }
             }
-        } 
-        else if(gameState == pauseState) { //spelet är pausat
+
+            // Uppdatera visuella effekter (minska lifetime)
+            for(int i = 0; i < vis.length; i++) {
+                if (vis[i] != null) {
+                vis[i].update();
+                }
+            }
+
+        } else if(gameState == pauseState) { //spelet är pausat
             //gör inget
         }
         else if(gameState == gameOverState) { //spelaren har dött
@@ -177,13 +186,21 @@ public class GamePanel extends JPanel implements Runnable{
             for(int i = 0; i < npc.length; i++) {
                 if (npc[i] != null) {
                 npc[i].draw(g2);
+                }
+            }
+
+            // Ritar visuella effekter
+            for(int i = 0; i < vis.length; i++) {
+                if (vis[i] != null) {
+                vis[i].draw(g2);
+                }
             }
 
             //rita UI
             ui.draw(g2);
-          } 
-        }
 
-        g2.dispose();
-    }
+            g2.dispose();
+
+        } 
+    }    
 }
