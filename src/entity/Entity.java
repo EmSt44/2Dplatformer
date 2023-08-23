@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import visual.GenericDeathSmoke;
+import visual.VisualEffect;
 
 public class Entity{
 
@@ -24,6 +26,9 @@ public class Entity{
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public int actionLockCounter = 0;
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
 
     //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
     //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
@@ -36,6 +41,10 @@ public class Entity{
     //Entity status (liv)
     public int maxLife;
     public int life;
+    public Projectile projectile;
+
+    //Hur mycket skada fienden gör vid kontakt
+    public int damage;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -115,4 +124,25 @@ public class Entity{
     }
 
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
+
+
+    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation osv.
+    public void takeDamage(int damageAmount) {
+        this.life -= damageAmount;
+        if (life <= 0) {
+            this.die();
+        }
+    }
+
+    //Bör overridas om man vill ha ex. odödlig fiende eller annan dödsanimation osv. 
+    public void die() {
+        for (int i = 0; i < gp.npc.length; i++) {
+            if (gp.npc[i] != null) {
+                if (gp.npc[i] == this) {
+                    new GenericDeathSmoke(gp, worldX, worldY);
+                    gp.npc[i] = null;
+                }
+            } 
+        }
+    }
 }
