@@ -11,19 +11,21 @@ public class Projectile extends Entity{
         super(gp);
     }
 
-    public void set(int worldX, int worldY, String direction, int life, Entity user) {
+    public void set(int worldX, int worldY, String direction, boolean alive, Entity user, int damage) {
 
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
-        this.life = life;
+        this.alive = alive;
+        this.life = this.maxLife;
         this.user = user;
         this.gravity = false;
+        this.damage = damage;
     }
 
     public void update() {
 
-        int index;
+        int hitEntity = 999;
 
         switch(direction) {
             case "right": 
@@ -34,15 +36,28 @@ public class Projectile extends Entity{
                 break;
         }
 
+        /*life--;
+        if(life <= 0){
+            alive = false;
+        }*/
+
         collisionOn = false;
         gp.cChecker.checkTile(this);
-        index = gp.cChecker.checkEntity(this, gp.npc);
+        hitEntity = gp.cChecker.checkEntity(this, gp.npc);
 
-        if(collisionOn == true){
+        if(hitEntity != 999) {
+            if(gp.npc[hitEntity].stompable == true){
+                gp.npc[hitEntity].takeDamage(damage);
+            }
             life = 0;
+            alive = false;
         }
-        else if(index != 999) {
+        else if(collisionOn == true){
             life = 0;
+            alive = false;
+        }
+        else{
+            life = maxLife;
         }
 
         spriteCounter++;

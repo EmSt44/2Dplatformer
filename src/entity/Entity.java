@@ -28,6 +28,7 @@ public class Entity{
     public BufferedImage image, image2, image3;
     public String name;
     public boolean collision = false;
+    public boolean alive;
 
     //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
     //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.

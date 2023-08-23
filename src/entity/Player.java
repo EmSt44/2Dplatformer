@@ -230,10 +230,10 @@ public class Player extends Entity{
             damageAnimation--;
         }
 
-        if(gp.keyH.shootKeyPressed == true && projectile.life > 0) {
+        if(gp.keyH.shootKeyPressed == true && projectile.alive == false) {
 
             //Set default coordinates, direction and user
-            projectile.set(worldX, worldY, direction, life, this);
+            projectile.set(worldX, worldY, direction, true, this, damage);
 
             //Add to the arraylist
             gp.projectileList.add(projectile);

@@ -200,12 +200,6 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
             // Ritar visuella effekter
-            /*
-            for(int i = 0; i < vis.length; i++) {
-                if (vis[i] != null) {
-                    vis[i].draw(g2);
-                }
-            }*/
             for(int i = 0; i < vis.length; i++) {
                 if(vis[i] != null){
                     entityList.add(vis[i]);
