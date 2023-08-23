@@ -24,6 +24,10 @@ public class NPC_Bat extends Entity{
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        life = 1;
+        maxLife = 1;
+        damage = 1;
     }
 
     public void getImage() {

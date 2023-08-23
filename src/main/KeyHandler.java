@@ -134,6 +134,15 @@ public class KeyHandler implements KeyListener {
            }
 
         }
+        //Knapptryck i gameOverState
+        else if(gp.gameState == gp.gameOverState) {
+
+            if(code == KeyEvent.VK_ENTER) {
+                gp.gameState = gp.menuState;
+                gp.ui.menuScreen = gp.ui.mainScreen;
+                gp.ui.commandNum = 0;
+            }
+        }
 
     }
 

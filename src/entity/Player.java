@@ -2,7 +2,12 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+<<<<<<< HEAD
 import object.OBJ_Shuriken;
+=======
+import visual.GenericDeathSmoke;
+
+>>>>>>> main
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -28,11 +33,18 @@ public class Player extends Entity{
     public final int screenX;
     public final int screenY;
 
-
+    //Hur mycket skada man gör genom att hoppa på folk
+    int damage = 1;
     //Hur många nycklar spelaren har
     int hasKey = 0;
-    int immunityCounter = 0;
 
+    //Andra variabler/ackumlatorer
+    int immunityCounter = 0;
+    int damageAnimation = 0;
+    boolean jumpPressed = false; 
+    boolean jumpThisFrame = false;
+    
+    BufferedImage damageVisual;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -80,6 +92,8 @@ public class Player extends Entity{
         try {
             left1 = ImageIO.read(new File("res/player/ninja_l.png"));
             right1 = ImageIO.read(new File("res/player/ninja_r.png"));
+            damageVisual = ImageIO.read(new File("res/player/bloodsplatter.png"));
+
         } 
         catch (IOException e) {
             e.printStackTrace();
@@ -87,6 +101,8 @@ public class Player extends Entity{
     }
 
     public void update() {
+
+        // new GenericDeathSmoke(gp, worldX, worldY);
 
         //VÄNSTER-HÖGER RÖRELSE
         this.collisionOn = false;
@@ -112,6 +128,20 @@ public class Player extends Entity{
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX + speed;
         }
+
+        //Så att man inte kan hålla in för att konstant hoppa
+        if(keyH.upPressed == true && !jumpPressed) {
+            jumpThisFrame = true;
+            jumpPressed = true;
+        }
+        else if (keyH.upPressed == true && jumpPressed) {
+            jumpThisFrame = false;
+        }
+        else if (keyH.upPressed == false && jumpPressed) {
+            jumpThisFrame = false;
+            jumpPressed = false;
+        }
+            
         
         //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
@@ -144,7 +174,7 @@ public class Player extends Entity{
             collisionOn = false;
             gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
             objIndex = gp.cChecker.checkObject(this, true);
-            if (keyH.upPressed == true && upSpeed <= 0 && collisionOn) {
+            if (jumpThisFrame && upSpeed <= 0 && collisionOn) {
                 upSpeed = jumpPower;
                 accumulatedFallSpeed = 1;
             }
@@ -183,22 +213,26 @@ public class Player extends Entity{
             upSpeed += 15; //kanske ändra till nån slags variabel bounceSpeed
             accumulatedFallSpeed = 1.0;
             immunityCounter += 20;
-            gp.npc[damagedNpc].life--;
-            System.out.println("entity " + damagedNpc + " tog skada");
+            gp.npc[damagedNpc].takeDamage(damage);
+            // System.out.println("entity " + damagedNpc + " tog skada");
         }
         else {
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         
-            if (npcIndex != 999 && immunityCounter == 0) {
-                life--; //för tillfället gör alla npc en skada vid kontakt
-                System.out.println("entity " + npcIndex + " gjorde skada");
+            if (npcIndex != 999 && immunityCounter == 0 && gp.npc[npcIndex].damage > 0) {
+                this.takeDamage(gp.npc[npcIndex].damage);
+                // System.out.println("entity " + npcIndex + " gjorde skada");
                 immunityCounter = immunityDuration;
+                damageAnimation = 15;
             }
         }
 
         //Nedräkning av i-frames
         if (immunityCounter > 0) {
             immunityCounter--;
+        }
+        if (damageAnimation > 0) {
+            damageAnimation--;
         }
 
         if(gp.keyH.shootKeyPressed == true && projectile.life > 0) {
@@ -249,6 +283,9 @@ public class Player extends Entity{
         }
 
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        if (damageAnimation > 0) { //blodstänk
+            g2.drawImage(damageVisual, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
     }
 
     public void resetPlayer() {

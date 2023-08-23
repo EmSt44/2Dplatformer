@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import visual.GenericDeathSmoke;
+import visual.VisualEffect;
 
 public class Entity{
 
@@ -40,6 +42,9 @@ public class Entity{
     public int maxLife;
     public int life;
     public Projectile projectile;
+
+    //Hur mycket skada fienden gör vid kontakt
+    public int damage;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -119,4 +124,26 @@ public class Entity{
     }
 
     public void setAction() {} //denna är endast här för att bli overridad av dess subklasser
+
+
+    //Bör overridas om man vill ha ex. odödlig fiende eller skadeanimation osv.
+    public void takeDamage(int damageAmount) {
+        this.life -= damageAmount;
+        if (life <= 0) {
+            this.die();
+        }
+    }
+
+    //Bör overridas om man vill ha ex. odödlig fiende eller annan dödsanimation osv. 
+    public void die() {
+        for (int i = 0; i < gp.npc.length; i++) {
+            if (gp.npc[i] != null) {
+                if (gp.npc[i] == this) {
+                    new GenericDeathSmoke(gp, worldX, worldY);
+                    System.out.println(i + " dog");
+                    gp.npc[i] = null;
+                }
+            } 
+        }
+    }
 }

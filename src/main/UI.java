@@ -66,6 +66,37 @@ public class UI extends JPanel {
             drawPlayerLife(g2);
             drawPause(g2);
         }
+        //GameOverState
+        else if(gp.gameState == gp.gameOverState) {
+            drawPlayerLife(g2);
+            drawGameOver(g2);
+        }
+    }
+
+    public void drawGameOver(Graphics2D g2) {
+
+        //Title
+        String goText = "GAME OVER";
+
+        int goTextLength = (int)g2.getFontMetrics().getStringBounds(goText, g2).getWidth();
+        int xPlacement = gp.screenWidth/2-goTextLength/2;
+
+        int yPlacement = gp.screenHeight/2;
+        
+        g2.drawString(goText, xPlacement, yPlacement);
+
+        //Subtext
+        g2.setFont(arial_20);
+
+        String qText = "Return To Menu";
+
+        int qTextLength = (int)g2.getFontMetrics().getStringBounds(qText, g2).getWidth();
+        int qXPlacement = gp.screenWidth/2-qTextLength/2;
+
+        int qYPlacement = gp.screenHeight/2 + 40;
+
+        g2.drawString(qText, qXPlacement, qYPlacement);
+        g2.drawString(">",qXPlacement-20, qYPlacement);
     }
 
     //Ritar upp liv på HUD
@@ -79,7 +110,7 @@ public class UI extends JPanel {
         int remainder = gp.player.life; //mängd liv som spelaren har kvar
         int spacing = 4; //distans i pixlar mellan varje hjärta
 
-        int i = 0; //accumulator för loopen
+        int i = 0; //accumulator för while loopen
 
         while(i < hearts) {
             if(remainder >= 2) {
@@ -94,7 +125,7 @@ public class UI extends JPanel {
                 i++;
                 x += gp.tileSize + spacing;
             }
-            else if(remainder == 0) {
+            else if(remainder <= 0) {
                 g2.drawImage(heart_empty, x, y, gp.tileSize, gp.tileSize, null);
                 //vid 0 ändra inte remainder
                 i++;
@@ -117,6 +148,7 @@ public class UI extends JPanel {
         
         g2.drawString(pauseText, xPlacement, yPlacement);
     }
+
     //Rita upp menyer
     public void drawMenu(Graphics2D g2) {
 
