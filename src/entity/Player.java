@@ -2,12 +2,8 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-<<<<<<< HEAD
 import object.OBJ_Shuriken;
-=======
 import visual.GenericDeathSmoke;
-
->>>>>>> main
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
