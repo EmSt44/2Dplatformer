@@ -26,22 +26,37 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         gp.npc[2] = new NPC_FireSlime(gp);
         gp.npc[2].worldX = gp.tileSize * 14;
         gp.npc[2].worldY = gp.tileSize * 45;
+
+        gp.npc[3] = new NPC_Bat(gp);
+        gp.npc[3].worldX = gp.tileSize * 18;
+        gp.npc[3].worldY = gp.tileSize * 13;
+
+        gp.npc[4] = new NPC_FireSlime(gp);
+        gp.npc[4].worldX = gp.tileSize * (49 - 14);
+        gp.npc[4].worldY = gp.tileSize * 8;
     }
 
     public void setObject() {
 
         gp.obj[0] = new OBJ_Key();
         gp.obj[0].worldX = gp.tileSize * 7;
-        gp.obj[0].worldY = gp.tileSize * 33;
+        gp.obj[0].worldY = gp.tileSize * 47;
 
-        gp.obj[1] = new OBJ_Key();
-        gp.obj[1].worldX = gp.tileSize * 7;
-        gp.obj[1].worldY = gp.tileSize * 48;
+        //Set door direction
+        OBJ_Door.Door_left = true;
+        gp.obj[1] = new OBJ_Door();
+        gp.obj[1].worldX = gp.tileSize * 4;
+        gp.obj[1].worldY = gp.tileSize * 33;
 
-        gp.obj[2] = new OBJ_Door();
-        gp.obj[2].worldX = gp.tileSize * 4;
-        gp.obj[2].worldY = gp.tileSize * 33;
+        gp.obj[2] = new OBJ_Key();
+        gp.obj[2].worldX = gp.tileSize * 48;
+        gp.obj[2].worldY = gp.tileSize * 10;
 
+        //Set door direction
+        OBJ_Door.Door_left = false;
+        gp.obj[3] = new OBJ_Door();
+        gp.obj[3].worldX = gp.tileSize * (49 - 14);
+        gp.obj[3].worldY = gp.tileSize * 3;
     }
 
     public void resetAssetSetter() {
