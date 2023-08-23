@@ -15,15 +15,26 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
     //Lista med mapAssets NPCs
     String mapAssetNPC[];
+    //Lista med mapAssets Objekt
+    String mapAssetObject[];
 
     //För att spara info från lästa filer NPC
     NPCproperties npcPropertiesList[];
     int npcsamount;
 
+    //För att spara info från lästa filer OBJEKT
+    OBJproperties objPropertiesList[];
+    int objsamount;
+
     //npc korrespondering
     private final int npc_bat = 0;
     private final int npc_goombi = 1;
     private final int npc_fireslime = 2;
+
+    //objekt korrespondering
+    private final int obj_door = 0;
+    private final int obj_key = 1;
+    private final int obj_shuriken = 2;
 
 
     public AssetSetter(GamePanel gp) {
@@ -31,6 +42,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
         //Sätt antalet mapAsset till mapsAmount
         mapAssetNPC = new String[gp.tileM.mapsAmount];
+        mapAssetObject = new String[gp.tileM.mapsAmount];
 
         getAssets();
     }
@@ -38,7 +50,12 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     private void getAssets() {
 
         //VIKTIGT: Se till att dessa korresponderar med samma map nummer som i TileManager getMaps
+
+        //NPC
         mapAssetNPC[0] = "res/mapAssets/testmap4_NPC"; 
+
+        //OBJECT
+        mapAssetObject[0] = "res/mapAssets/testmap4_OBJECT";
     }
 
     private void loadNPC(int mapNumber) {
@@ -46,7 +63,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         try {
             BufferedReader br = new BufferedReader(new FileReader(mapAssetNPC[mapNumber]));
 
-            int rows = countRows(mapNumber); //MYCKET ineffektivt, kan göras bättre genom att göra om npcPropertiesList till en länkad lista
+            int rows = countRows(mapNumber, mapAssetNPC); //MYCKET ineffektivt, kan göras bättre genom att göra om npcPropertiesList till en länkad lista
 
             int row = 0;
             npcsamount = 0; //mängdnpcs
@@ -76,12 +93,12 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         }
     }
 
-    private int countRows(int mapNumber) { //Räknar hur många rader ett dokument har
+    private int countRows(int mapNumber, String list[]) { //Räknar hur många rader ett dokument har
 
         int lines = 0;
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(mapAssetNPC[mapNumber]));
+            BufferedReader br = new BufferedReader(new FileReader(list[mapNumber]));
 
             while (br.readLine() != null) lines++;
 
@@ -106,6 +123,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
                 gp.npc[i] = new NPC_Bat(gp);
                 gp.npc[i].worldX = gp.tileSize * npcPropertiesList[i].x; 
                 gp.npc[i].worldY = gp.tileSize * npcPropertiesList[i].y;
+
             }
             else if(npcPropertiesList[i].type == npc_goombi) {
                 gp.npc[i] = new NPC_Goombi(gp);
@@ -123,32 +141,76 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         
     }
 
-    public void setObject() {
+    private void loadObject(int mapNumber) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(mapAssetObject[mapNumber]));
 
-        gp.obj[0] = new OBJ_Key(gp);
-        gp.obj[0].worldX = gp.tileSize * 7;
-        gp.obj[0].worldY = gp.tileSize * 47;
+            int rows = countRows(mapNumber, mapAssetObject); //MYCKET ineffektivt, kan göras bättre genom att göra om objPropertiesList till en länkad lista
 
-        //Set door direction
-        OBJ_Door.Door_left = true;
-        gp.obj[1] = new OBJ_Door(gp);
-        gp.obj[1].worldX = gp.tileSize * 4;
-        gp.obj[1].worldY = gp.tileSize * 33;
+            int row = 0;
+            objsamount = 0; //mängd objekt
 
-        gp.obj[2] = new OBJ_Key(gp);
-        gp.obj[2].worldX = gp.tileSize * 48;
-        gp.obj[2].worldY = gp.tileSize * 10;
 
-        //Set door direction
-        OBJ_Door.Door_left = false;
-        gp.obj[3] = new OBJ_Door(gp);
-        gp.obj[3].worldX = gp.tileSize * (49 - 14);
-        gp.obj[3].worldY = gp.tileSize * 3;
+            objPropertiesList = new OBJproperties[rows];
+
+            while(row < rows) {
+
+                String line = br.readLine();
+
+                String numbers[] = line.split(",");
+                objPropertiesList[row] = new OBJproperties();
+                objPropertiesList[row].type = Integer.parseInt(numbers[0]);
+                objPropertiesList[row].x = Integer.parseInt(numbers[1]);
+                objPropertiesList[row].y = Integer.parseInt(numbers[2]);
+                objPropertiesList[row].side = Integer.parseInt(numbers[3]);
+
+                objsamount++;
+                row++;
+
+            }
+            br.close();
+
+        }catch(IOException e) {
+
+        }
+    }
+
+    public void setObject(int mapNumber) {
+
+        loadObject(mapNumber);
+
+        int i = 0;
+
+        while(i < objsamount) {
+
+            if(objPropertiesList[i].type == obj_door) {
+                gp.obj[i] = new OBJ_Door(gp);
+                gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
+                gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
+                if(objPropertiesList[i].side == 0) {
+                    OBJ_Door.Door_left = false;
+                }
+                else if(objPropertiesList[i].side == 1) {
+                    OBJ_Door.Door_left = true;
+                }
+            }
+            else if(objPropertiesList[i].type == obj_key) {
+                gp.obj[i] = new OBJ_Key(gp);
+                gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
+                gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
+            }
+            else if(objPropertiesList[i].type == obj_shuriken) {
+                gp.obj[i] = new OBJ_Shuriken(gp);
+                gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
+                gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
+            }
+            i++;
+        }
     }
 
     public void resetAssetSetter(int mapNumber) {
         setNPC(mapNumber);
-        setObject();
+        setObject(mapNumber);
     }
     
 }
