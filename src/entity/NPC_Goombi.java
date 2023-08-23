@@ -30,6 +30,7 @@ public class NPC_Goombi extends Entity{
 
         maxLife = 1;
         life = 1;
+        damage = 1;
     }
 
     public void getImage() {
