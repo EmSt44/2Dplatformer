@@ -236,4 +236,50 @@ public class CollisionChecker {
         }
         return index;
     }
+    
+    //Kollar om entity kolliderar/kommer kollidera nästa frame med någon i target UNDER DEN,
+    //om så är fallet, collisionOn = true och target i frågas index i NPC-listan returneras
+    //Notera att med gravity = true kollar den endast under om du faller, och gravity = false om direction = "down"
+    public int checkEntityBelow(Entity entity, Entity[] target) {
+        int index = 999;
+
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+
+                //Entity's hitbox plats i världen
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+                //Target's hitbox plats i världen
+                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
+                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+
+                if (entity.gravity == false && entity.direction == "down") {
+                    entity.solidArea.y += entity.speed;
+                }               
+                else if (entity.gravity == true && entity.upSpeed < 0.0) {
+                    entity.solidArea.y += entity.accumulatedFallSpeed;
+                    // switch (entity.direction) { //osäker om denna switchcase ska vara med.
+                    //     case "left": 
+                    //             entity.solidArea.x -= entity.speed;
+                    //             break;
+                    //     case "right":
+                    //         entity.solidArea.x += entity.speed;
+                    //         break;
+                    //}
+                }                
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+                    entity.collisionOn = true;
+                    index = i;
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                target[i].solidArea.x = target[i].solidAreaDefaultX;
+                target[i].solidArea.y = target[i].solidAreaDefaultY;
+                
+            }
+        }
+        return index;
+    }
+
 }

@@ -23,9 +23,12 @@ public class Player extends Entity{
     public double jumpFalloff = 1.0; //ändra denna för att ändra hur snabbt hoppet decelerar
     public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
 
+    int immunityDuration = 60; //Antal frames man är immun efter att ha tagit skada
+
     public final int screenX;
     public final int screenY;
     int hasKey = 0;
+    int immunityCounter = 0;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -38,13 +41,12 @@ public class Player extends Entity{
 
         setDefaultValues();
 
-        //ändra dessa till en mer rimlig hitbox
         solidArea = new Rectangle();
-        solidArea.x = 8;
+        solidArea.x = 15;
         solidArea.y = 8;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 32;
+        solidArea.width = 18;
         solidArea.height = 32;
 
         solidAreaDefaultX = solidArea.x;
@@ -80,6 +82,7 @@ public class Player extends Entity{
         this.collisionOn = false;
 
         int objIndex = 999;
+        int damagedNpc = 999;
 
         if(keyH.leftPressed == true) {
             direction = "left";
@@ -163,10 +166,30 @@ public class Player extends Entity{
         pickUpObject(objIndex);
 
         //NPC KOLLISION
-        int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-        if (npcIndex != 999) System.out.println(npcIndex);
+        //npc stampningscheck
+        collisionOn = false;
+        damagedNpc = gp.cChecker.checkEntityBelow(this, gp.npc);
+        if (collisionOn && damagedNpc != 999 && accumulatedFallSpeed > 2.0) {
+            upSpeed += 15; //kanske ändra till nån slags variabel bounceSpeed
+            accumulatedFallSpeed = 1.0;
+            immunityCounter += 20;
+            gp.npc[damagedNpc].life--;
+            System.out.println("entity " + damagedNpc + " tog skada");
+        }
+        else {
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+        
+            if (npcIndex != 999 && immunityCounter == 0) {
+                life--; //för tillfället gör alla npc en skada vid kontakt
+                System.out.println("entity " + npcIndex + " gjorde skada");
+                immunityCounter = immunityDuration;
+            }
+        }
 
-
+        //Nedräkning av i-frames
+        if (immunityCounter > 0) {
+            immunityCounter--;
+        }
     }
 
     public void pickUpObject(int i) {
