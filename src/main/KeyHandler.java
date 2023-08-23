@@ -104,7 +104,7 @@ public class KeyHandler implements KeyListener {
                 }
                 else { //starta valda mapen
                     gp.tileM.loadMap(gp.ui.commandNum);
-                    gp.aSetter.resetAssetSetter();
+                    gp.aSetter.resetAssetSetter(gp.ui.commandNum);
                     gp.player.resetPlayer();
                     gp.gameState = gp.playState;
                 }
