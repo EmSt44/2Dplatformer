@@ -259,4 +259,5 @@ public class UI extends JPanel {
     private int getTextLength(String text, Graphics2D g2) {
         return (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
     }
+
 }
