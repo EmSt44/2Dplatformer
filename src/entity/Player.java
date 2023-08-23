@@ -2,8 +2,12 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+<<<<<<< HEAD
+import object.OBJ_Shuriken;
+=======
 import visual.GenericDeathSmoke;
 
+>>>>>>> main
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -79,6 +83,9 @@ public class Player extends Entity{
 
         //Player "inventory"
         hasKey = 0;
+
+        //Player projectile
+        projectile = new OBJ_Shuriken(gp);
     }
 
     public void getPlayerImage() {
@@ -226,6 +233,15 @@ public class Player extends Entity{
         }
         if (damageAnimation > 0) {
             damageAnimation--;
+        }
+
+        if(gp.keyH.shootKeyPressed == true && projectile.life > 0) {
+
+            //Set default coordinates, direction and user
+            projectile.set(worldX, worldY, direction, life, this);
+
+            //Add to the arraylist
+            gp.projectileList.add(projectile);
         }
     }
 

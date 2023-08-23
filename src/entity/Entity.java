@@ -26,6 +26,9 @@ public class Entity{
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public int actionLockCounter = 0;
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
 
     //Om entity ska påverkas av gravitation. Ifall true, så bör endast "right" och "left" används som direction.
     //Ifall false, så kan entityn exempelvis flyga nedåt eller uppåt och då kan direction "up" och "down" vara relevant.
@@ -38,6 +41,7 @@ public class Entity{
     //Entity status (liv)
     public int maxLife;
     public int life;
+    public Projectile projectile;
 
     //Hur mycket skada fienden gör vid kontakt
     public int damage;
