@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int menuState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int gameOverState = 3;
 
 
     public GamePanel() {
@@ -127,12 +128,17 @@ public class GamePanel extends JPanel implements Runnable{
         
         if(gameState == playState) {
 
-            player.update();
+            if(player.life <= 0) {
+                gameState = gameOverState;
+            }
+            else {
+                player.update();
             
-            for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
-                if (npc[i] != null) {
-                    npc[i].update();
-                }
+                for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
+                    if (npc[i] != null) {
+                        npc[i].update();
+                    }
+                 }
             }
 
             // Uppdatera visuella effekter (minska lifetime)
@@ -144,6 +150,9 @@ public class GamePanel extends JPanel implements Runnable{
 
         } else if(gameState == pauseState) { //spelet är pausat
             //gör inget
+        }
+        else if(gameState == gameOverState) { //spelaren har dött
+            //gör inget spelet är över
         }
     }
     
