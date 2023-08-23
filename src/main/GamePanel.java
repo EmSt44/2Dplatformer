@@ -63,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int menuState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int gameOverState = 3;
 
 
     public GamePanel() {
@@ -125,15 +126,24 @@ public class GamePanel extends JPanel implements Runnable{
         
         if(gameState == playState) {
 
-            player.update();
-            
-            for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
-                if (npc[i] != null) {
-                    npc[i].update();
-                }
+            if(player.life <= 0) {
+                gameState = gameOverState;
             }
-        } else if(gameState == pauseState) { //spelet är pausat
+            else {
+                player.update();
+            
+                for(int i = 0; i < npc.length; i++) { //uppdatera alla NPC
+                    if (npc[i] != null) {
+                        npc[i].update();
+                    }
+                 }
+            }
+        } 
+        else if(gameState == pauseState) { //spelet är pausat
             //gör inget
+        }
+        else if(gameState == gameOverState) { //spelaren har dött
+            //gör inget spelet är över
         }
     }
     
@@ -163,14 +173,14 @@ public class GamePanel extends JPanel implements Runnable{
             // Ritar PLAYER
             player.draw(g2);
 
-            //rita UI
-            ui.draw(g2);
-
             // Ritar NPC
             for(int i = 0; i < npc.length; i++) {
                 if (npc[i] != null) {
                 npc[i].draw(g2);
             }
+
+            //rita UI
+            ui.draw(g2);
           } 
         }
 
