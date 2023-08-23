@@ -47,42 +47,40 @@ public class NPC_Goombi extends Entity{
     }
 
     public void setAction() {
-        if (life > 0) {
-            if (this.direction == "left") {
-                this.worldX -= speed;
-            } else if (this.direction == "right") {
-                this.worldX += speed;
-            }
-            
-            this.collisionOn = false;
-            gp.cChecker.checkTile(this);
+        if (this.direction == "left") {
+            this.worldX -= speed;
+        } else if (this.direction == "right") {
+            this.worldX += speed;
+        }
+        
+        this.collisionOn = false;
+        gp.cChecker.checkTile(this);
 
-            if(this.collisionOn == true && this.direction == "right"){
-                this.direction = "left";
-            }
-            else if(this.collisionOn == true && this.direction == "left") {
-                this.direction = "right";
-            }
+        if(this.collisionOn == true && this.direction == "right"){
+            this.direction = "left";
+        }
+        else if(this.collisionOn == true && this.direction == "left") {
+            this.direction = "right";
+        }
 
-            //RÖRELSE NEDÅT (FALLA)
-            //om man inte står på marken och inte hoppar uppåt så ska man falla
-            if (upSpeed <= 0) { 
-                collisionOn = false; 
+        //RÖRELSE NEDÅT (FALLA)
+        //om man inte står på marken och inte hoppar uppåt så ska man falla
+        if (upSpeed <= 0) { 
+            collisionOn = false; 
+            gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
+            //check npc osv
+            if (!collisionOn) {
+                this.worldY += accumulatedFallSpeed;
+                accumulatedFallSpeed += gravityModifier;
+            }
+            else {
+                //återställ fall speed när man står på marken
+                accumulatedFallSpeed = 1;
+                collisionOn = false;
                 gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
-                //check npc osv
-                if (!collisionOn) {
+                while (!collisionOn) { //denna så att man landar på marken och inte ovanför
                     this.worldY += accumulatedFallSpeed;
-                    accumulatedFallSpeed += gravityModifier;
-                }
-                else {
-                    //återställ fall speed när man står på marken
-                    accumulatedFallSpeed = 1;
-                    collisionOn = false;
                     gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
-                    while (!collisionOn) { //denna så att man landar på marken och inte ovanför
-                        this.worldY += accumulatedFallSpeed;
-                        gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
-                    }
                 }
             }
         }

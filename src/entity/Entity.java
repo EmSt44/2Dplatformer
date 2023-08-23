@@ -136,7 +136,6 @@ public class Entity{
             if (gp.npc[i] != null) {
                 if (gp.npc[i] == this) {
                     new GenericDeathSmoke(gp, worldX, worldY);
-                    System.out.println(i + " dog");
                     gp.npc[i] = null;
                 }
             } 
