@@ -30,7 +30,11 @@ public class Player extends Entity{
 
     //Hur många nycklar spelaren har
     int hasKey = 0;
+
+    //Andra variabler/ackumlatorer
     int immunityCounter = 0;
+    boolean jumpPressed = false; 
+    boolean jumpThisFrame = false;
 
 
 
@@ -108,6 +112,20 @@ public class Player extends Entity{
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX + speed;
         }
+
+        //Så att man inte kan hålla in för att konstant hoppa
+        if(keyH.upPressed == true && !jumpPressed) {
+            jumpThisFrame = true;
+            jumpPressed = true;
+        }
+        else if (keyH.upPressed == true && jumpPressed) {
+            jumpThisFrame = false;
+        }
+        else if (keyH.upPressed == false && jumpPressed) {
+            jumpThisFrame = false;
+            jumpPressed = false;
+        }
+            
         
         //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
@@ -140,7 +158,7 @@ public class Player extends Entity{
             collisionOn = false;
             gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
             objIndex = gp.cChecker.checkObject(this, true);
-            if (keyH.upPressed == true && upSpeed <= 0 && collisionOn) {
+            if (jumpThisFrame && upSpeed <= 0 && collisionOn) {
                 upSpeed = jumpPower;
                 accumulatedFallSpeed = 1;
             }
