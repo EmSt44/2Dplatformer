@@ -40,6 +40,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     private final int obj_door = 0;
     private final int obj_key = 1;
     private final int obj_shuriken = 2;
+    private final int obj_trophy = 4;
 
 
     public AssetSetter(GamePanel gp) {
@@ -210,6 +211,11 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
             }
             else if(objPropertiesList[i].type == obj_shuriken) {
                 gp.obj[i] = new OBJ_Shuriken(gp);
+                gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
+                gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
+            }
+            else if(objPropertiesList[i].type == obj_trophy) {
+                gp.obj[i] = new OBJ_Trophy(gp);
                 gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
                 gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
             }

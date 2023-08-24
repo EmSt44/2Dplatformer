@@ -280,6 +280,9 @@ public class Player extends Entity{
                         System.out.println("Key:" + hasKey);
                     }
                     break;
+                case "Trophy":
+                    gp.gameState = gp.menuState;
+                    break;
             }
         }
     }
