@@ -76,14 +76,27 @@ public class UI extends JPanel {
     public void drawGameOver(Graphics2D g2) {
 
         //Title
-        String goText = "GAME OVER";
+        if(gp.player.hasTrophy == false) {
+            String goText = "GAME OVER";
 
-        int goTextLength = (int)g2.getFontMetrics().getStringBounds(goText, g2).getWidth();
-        int xPlacement = gp.screenWidth/2-goTextLength/2;
+            int goTextLength = (int)g2.getFontMetrics().getStringBounds(goText, g2).getWidth();
+            int xPlacement = gp.screenWidth/2-goTextLength/2;
 
-        int yPlacement = gp.screenHeight/2;
+            int yPlacement = gp.screenHeight/2;
         
-        g2.drawString(goText, xPlacement, yPlacement);
+            g2.drawString(goText, xPlacement, yPlacement);
+        }
+        else if(gp.player.hasTrophy == true) {
+             String goText = "VICTORY";
+
+            int goTextLength = (int)g2.getFontMetrics().getStringBounds(goText, g2).getWidth();
+            int xPlacement = gp.screenWidth/2-goTextLength/2;
+
+            int yPlacement = gp.screenHeight/2;
+        
+            g2.drawString(goText, xPlacement, yPlacement);
+        }
+
 
         //Subtext
         g2.setFont(arial_20);

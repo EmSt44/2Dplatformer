@@ -37,6 +37,8 @@ public class Player extends Entity{
     int damage = 1;
     //Hur många nycklar spelaren har
     int hasKey = 0;
+    //Om spelaren har trophy elller inte
+    public boolean hasTrophy = false;
 
     //Andra variabler/ackumlatorer
     int immunityCounter = 0;
@@ -279,6 +281,10 @@ public class Player extends Entity{
                         hasKey--;
                         System.out.println("Key:" + hasKey);
                     }
+                    break;
+                case "Trophy":
+                    hasTrophy = true;
+                    gp.gameState = gp.gameOverState;
                     break;
             }
         }
