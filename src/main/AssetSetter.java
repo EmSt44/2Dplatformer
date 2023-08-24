@@ -59,13 +59,16 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         //VIKTIGT: Se till att dessa korresponderar med samma map nummer som i TileManager getMaps
 
         //NPC
-        mapAssetNPC[0] = "res/mapAssets/testmap4_NPC"; 
+        mapAssetNPC[0] = "res/mapAssets/testmap4_NPC";
+        mapAssetNPC[1] = "res/mapAssets/testmap5_NPC";  
 
         //OBJECT
         mapAssetObject[0] = "res/mapAssets/testmap4_OBJECT";
+        mapAssetObject[1] = "res/mapAssets/testmap5_OBJECT";
 
         //PLAYER
         mapAssetPlayer[0] = "res/mapAssets/testmap4_PLAYER";
+        mapAssetPlayer[1] = "res/mapAssets/testmap5_PLAYER";
     }
 
     private void loadNPC(int mapNumber) {
