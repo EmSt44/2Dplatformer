@@ -21,9 +21,6 @@ public class Player extends Entity{
     KeyHandler keyH;
 
     //hopp-associerade ackumlatorer och variabler
-    public boolean gravity = true;
-    public double accumulatedFallSpeed = 1.0;
-    public double upSpeed = 0.0;
     public double jumpPower = 20.0; //ändra denna för att ändra hoppets initiella styrka.
     public double jumpFalloff = 1.0; //ändra denna för att ändra hur snabbt hoppet decelerar
     public double gravityModifier = 1.0; //ändra denna för att ändra hur snabbt fallet accelererar
@@ -87,6 +84,10 @@ public class Player extends Entity{
 
         //Player projectile
         projectile = new OBJ_Shuriken(gp);
+
+        gravity = true;
+        accumulatedFallSpeed = 1.0;
+        upSpeed = 0.0;
     }
 
     public void getPlayerImage() {

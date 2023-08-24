@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import entity.NPC_Bat;
-import entity.NPC_Goombi;
-import entity.NPC_FireSlime;
+import entity.*;
 import object.*;
 
 public class AssetSetter { //används för att sätta in objekt/NPC i världen
@@ -30,6 +28,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     private final int npc_bat = 0;
     private final int npc_goombi = 1;
     private final int npc_fireslime = 2;
+    private final int npc_shrooter = 3;
 
     //objekt korrespondering
     private final int obj_door = 0;
@@ -133,6 +132,11 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
             else if(npcPropertiesList[i].type == npc_fireslime) {
                 gp.npc[i] = new NPC_FireSlime(gp);
                 gp.npc[i].worldX = gp.tileSize * npcPropertiesList[i].x; 
+                gp.npc[i].worldY = gp.tileSize * npcPropertiesList[i].y;
+            }
+            else if(npcPropertiesList[i].type == npc_shrooter) {
+                gp.npc[i] = new NPC_Shrooter(gp);
+                gp.npc[i].worldX = gp.tileSize * npcPropertiesList[i].x;
                 gp.npc[i].worldY = gp.tileSize * npcPropertiesList[i].y;
             }
 

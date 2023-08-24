@@ -36,28 +36,40 @@ public class Projectile extends Entity{
                 break;
         }
 
-        /*life--;
-        if(life <= 0){
-            alive = false;
-        }*/
+        if(user == gp.player){
+            
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            hitEntity = gp.cChecker.checkEntity(this, gp.npc);
 
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
-        hitEntity = gp.cChecker.checkEntity(this, gp.npc);
-
-        if(hitEntity != 999) {
-            if(gp.npc[hitEntity].stompable == true){
-                gp.npc[hitEntity].takeDamage(damage);
+            if(hitEntity != 999) {
+                if(gp.npc[hitEntity].stompable == true){
+                    gp.npc[hitEntity].takeDamage(damage);
+                }
+                life = 0;
+                alive = false;
             }
-            life = 0;
-            alive = false;
+            else if(collisionOn == true){
+                life = 0;
+                alive = false;
+            }
         }
-        else if(collisionOn == true){
-            life = 0;
-            alive = false;
-        }
-        else{
-            life = maxLife;
+        if(user != gp.player){
+
+            collisionOn = false;
+            gp.cChecker.checkTile(this);
+            hitEntity = gp.cChecker.checkProjectile(gp.player, this);
+
+            if(hitEntity == 1) {
+                gp.player.takeDamage(damage);
+                life = 0;
+                alive = false;
+            }
+            else if(collisionOn == true){
+                life = 0;
+                alive = false;
+            }
+
         }
 
         spriteCounter++;

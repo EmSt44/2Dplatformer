@@ -1,6 +1,8 @@
 package main;
 
 import entity.Entity;
+import entity.Projectile;
+import entity.Player;
 //import tile.TileManager;
 
 public class CollisionChecker {
@@ -282,4 +284,56 @@ public class CollisionChecker {
         return index;
     }
 
+    public int checkProjectile(Entity entity, Entity projectile){
+        int index = 0;
+        //Entity's hitbox plats i världen
+        entity.solidArea.x = entity.worldX + entity.solidArea.x;
+        entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+        //Ett objekt ur gp.obj's hitbox plats i världen
+        projectile.solidArea.x = projectile.worldX + projectile.solidArea.x;
+        projectile.solidArea.y = projectile.worldY + projectile.solidArea.y;
+                
+        if (entity.gravity == false) {
+            switch(entity.direction) {
+                case "up":
+                    entity.solidArea.y -= entity.speed;
+                    break;
+                case "down":
+                    entity.solidArea.y += entity.speed;
+                    break;
+                case "left":
+                    entity.solidArea.x -= entity.speed;
+                    break;
+                case "right":
+                    entity.solidArea.x += entity.speed;
+                    break;
+            }
+        }
+        else if (entity.gravity == true) {
+            if (entity.upSpeed > 0.0) {
+                entity.solidArea.y -= entity.upSpeed;
+            }
+            else {
+                entity.solidArea.y += entity.accumulatedFallSpeed;
+            }
+            switch (entity.direction) {
+                case "left": 
+                        entity.solidArea.x -= entity.speed;
+                        break;
+                case "right":
+                    entity.solidArea.x += entity.speed;
+                    break;
+            }
+        }
+
+        if(entity.solidArea.intersects(projectile.solidArea)){
+            index = 1;
+        }
+        entity.solidArea.x = entity.solidAreaDefaultX;
+        entity.solidArea.y = entity.solidAreaDefaultY;
+        projectile.solidArea.x = projectile.solidAreaDefaultX;
+        projectile.solidArea.y = projectile.solidAreaDefaultY;
+        return index;
+    }
 }

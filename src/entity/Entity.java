@@ -42,6 +42,7 @@ public class Entity{
     public int maxLife;
     public int life;
     public Projectile projectile;
+    public int shooting;
 
     //Hur mycket skada fienden gör vid kontakt
     public int damage;
