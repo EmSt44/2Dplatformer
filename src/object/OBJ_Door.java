@@ -20,6 +20,9 @@ public class OBJ_Door extends Entity {
         solidArea.width = 28;
         solidArea.height = 48;
 
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
+
         name = "Door";
         if(Door_left){
             try{
