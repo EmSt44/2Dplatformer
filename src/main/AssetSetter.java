@@ -17,6 +17,8 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     String mapAssetNPC[];
     //Lista med mapAssets Objekt
     String mapAssetObject[];
+    //Lista med mapAssets Player
+    String mapAssetPlayer[];
 
     //För att spara info från lästa filer NPC
     NPCproperties npcPropertiesList[];
@@ -25,6 +27,9 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
     //För att spara info från lästa filer OBJEKT
     OBJproperties objPropertiesList[];
     int objsamount;
+
+    //För att spara spelarens koordinater
+    int playerCoords[];
 
     //npc korrespondering
     private final int npc_bat = 0;
@@ -43,6 +48,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         //Sätt antalet mapAsset till mapsAmount
         mapAssetNPC = new String[gp.tileM.mapsAmount];
         mapAssetObject = new String[gp.tileM.mapsAmount];
+        mapAssetPlayer = new String[gp.tileM.mapsAmount];
 
         getAssets();
     }
@@ -56,6 +62,9 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
         //OBJECT
         mapAssetObject[0] = "res/mapAssets/testmap4_OBJECT";
+
+        //PLAYER
+        mapAssetPlayer[0] = "res/mapAssets/testmap4_PLAYER";
     }
 
     private void loadNPC(int mapNumber) {
@@ -111,7 +120,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
 
     }
 
-    public void setNPC(int mapNumber) {
+    private void setNPC(int mapNumber) {
 
         loadNPC(mapNumber);
 
@@ -175,7 +184,7 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         }
     }
 
-    public void setObject(int mapNumber) {
+    private void setObject(int mapNumber) {
 
         loadObject(mapNumber);
 
@@ -184,15 +193,15 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         while(i < objsamount) {
 
             if(objPropertiesList[i].type == obj_door) {
+                if(objPropertiesList[i].side == 0) { //0 = false
+                    OBJ_Door.Door_left = false;
+                }
+                else if(objPropertiesList[i].side == 1) { //1 = true
+                    OBJ_Door.Door_left = true;
+                }
                 gp.obj[i] = new OBJ_Door(gp);
                 gp.obj[i].worldX = gp.tileSize * objPropertiesList[i].x;
                 gp.obj[i].worldY = gp.tileSize * objPropertiesList[i].y;
-                if(objPropertiesList[i].side == 0) {
-                    OBJ_Door.Door_left = false;
-                }
-                else if(objPropertiesList[i].side == 1) {
-                    OBJ_Door.Door_left = true;
-                }
             }
             else if(objPropertiesList[i].type == obj_key) {
                 gp.obj[i] = new OBJ_Key(gp);
@@ -208,9 +217,39 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
         }
     }
 
+    private void loadPlayer(int mapNumber) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(mapAssetPlayer[mapNumber]));
+
+
+                String line = br.readLine();
+
+                String numbers[] = line.split(",");
+                
+                playerCoords = new int[2];
+                playerCoords[0] = Integer.parseInt(numbers[0]);
+                playerCoords[1] = Integer.parseInt(numbers[1]);
+
+                System.out.println(numbers[0]+","+numbers[1]);
+
+            br.close();
+
+        }catch(IOException e) {
+
+        }
+    }
+
+    private void setPlayer(int mapNumber) {
+
+        loadPlayer(mapNumber);
+
+        gp.player.setDefaultValues(playerCoords[0], playerCoords[1]);
+    }
+
     public void resetAssetSetter(int mapNumber) {
         setNPC(mapNumber);
         setObject(mapNumber);
+        setPlayer(mapNumber);
     }
     
 }

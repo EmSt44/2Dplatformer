@@ -56,8 +56,6 @@ public class Player extends Entity{
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
-        setDefaultValues();
-
         solidArea = new Rectangle();
         solidArea.x = 15;
         solidArea.y = 8;
@@ -72,10 +70,10 @@ public class Player extends Entity{
         getPlayerImage();
         
     }
-    public void setDefaultValues() {
+    public void setDefaultValues(int x, int y) {
 
-        worldX = gp.tileSize * 40;
-        worldY = gp.tileSize * 40;
+        worldX = gp.tileSize * x;
+        worldY = gp.tileSize * y;
         speed = 5;
 
         //Player Status (liv)
@@ -346,7 +344,4 @@ public class Player extends Entity{
         }
     }
 
-    public void resetPlayer() {
-        setDefaultValues();
-    }
 }
