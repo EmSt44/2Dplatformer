@@ -281,7 +281,7 @@ public class Player extends Entity{
                     }
                     break;
                 case "Trophy":
-                    gp.gameState = gp.menuState;
+                    gp.gameState = gp.gameOverState;
                     break;
             }
         }
