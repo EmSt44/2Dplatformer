@@ -19,7 +19,7 @@ public int mapTileNum[][];
 
 //Lista med alla maps, representerade som strängar av sin filepath, ex: "res/maps/map1"
 public String[] maps;
-public final int mapsAmount = 1; //maximalt antal maps VIKTIGT! detta måste korrespondera med antalet maps exakt
+public final int mapsAmount = 2; //maximalt antal maps VIKTIGT! detta måste korrespondera med antalet maps exakt
 
 
 public TileManager(GamePanel gp) {
@@ -36,6 +36,7 @@ public TileManager(GamePanel gp) {
 public void getMaps() { //lägg till maps här
 
     maps[0] = "res/maps/testmap4";
+    maps[1] = "res/maps/testmap5";
 }
 
 public void getTileImage() { //läser in png filer för varje tile och lägger dem i ett index i tile listan
