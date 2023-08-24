@@ -3,6 +3,11 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Shuriken;
+
+
+import visual.GenericDeathSmoke;
+
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
