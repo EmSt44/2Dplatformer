@@ -230,8 +230,6 @@ public class AssetSetter { //används för att sätta in objekt/NPC i världen
                 playerCoords[0] = Integer.parseInt(numbers[0]);
                 playerCoords[1] = Integer.parseInt(numbers[1]);
 
-                System.out.println(numbers[0]+","+numbers[1]);
-
             br.close();
 
         }catch(IOException e) {
