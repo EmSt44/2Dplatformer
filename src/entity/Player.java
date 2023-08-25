@@ -87,6 +87,10 @@ public class Player extends Entity{
 
         //Player projectile
         projectile = new OBJ_Shuriken(gp);
+
+        //Återställ hopp vid värld reload
+        upSpeed = 0.0;
+        accumulatedFallSpeed = 1.0;
     }
 
     public void getPlayerImage() {
