@@ -35,8 +35,8 @@ public TileManager(GamePanel gp) {
 
 public void getMaps() { //lägg till maps här
 
-    maps[0] = "res/maps/testmap4";
-    maps[1] = "res/maps/testmap5";
+    maps[0] = "res/maps/World 1";
+    maps[1] = "res/maps/Trophy";
 }
 
 public void getTileImage() { //läser in png filer för varje tile och lägger dem i ett index i tile listan

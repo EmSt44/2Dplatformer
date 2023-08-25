@@ -226,7 +226,7 @@ public class UI extends JPanel {
     private void drawMenuMain(Graphics2D g2) {
 
         //TITLE
-        String titleText = "2Dplatformer";
+        String titleText = "Ninja Trials";
 
         int titleTextLength = getTextLength(titleText, g2);
         int xPlacement = gp.screenWidth/2-titleTextLength/2;

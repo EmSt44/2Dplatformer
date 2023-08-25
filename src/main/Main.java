@@ -9,7 +9,7 @@ public class Main {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("2D Platformer");
+        window.setTitle("Ninja Trials");
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
