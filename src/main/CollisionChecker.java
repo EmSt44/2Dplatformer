@@ -146,14 +146,13 @@ public class CollisionChecker {
                     }
                     switch (entity.direction) {
                         case "left": 
-                                entity.solidArea.x -= entity.speed;
-                                break;
+                            entity.solidArea.x -= entity.speed;
+                            break;
                         case "right":
                             entity.solidArea.x += entity.speed;
                             break;
                     }
                 }
-
                 if (entity.solidArea.intersects(target[i].solidArea)) {
                     entity.collisionOn = true;
                     index = i;
@@ -213,20 +212,30 @@ public class CollisionChecker {
                     }
                     switch (entity.direction) {
                         case "left": 
-                                entity.solidArea.x -= entity.speed;
-                                break;
+                            entity.solidArea.x -= entity.speed;
+                            break;
                         case "right":
                             entity.solidArea.x += entity.speed;
                             break;
                     }
                 }
+                
 
+                
                 if(entity.solidArea.intersects(gp.obj[i].solidArea)){
                     if(gp.obj[i].collision == true){
                         entity.collisionOn = true;
                     }
                     if(player == true){
                         index = i;
+                    }
+                }
+
+                if (player) {
+                    // System.out.println("speed: " + entity.speed + " fallSpeed: " + entity.accumulatedFallSpeed + " upSpeed: " + entity.upSpeed);
+                    if (i == 4) {
+                        int ninja_r_edge = entity.solidArea.x + entity.solidArea.width;
+                        System.out.println("vänsterkant spik: " + gp.obj[i].solidArea.x + ", högerkant ninja: " + ninja_r_edge + ", collisionOn: " + entity.collisionOn);
                     }
                 }
 

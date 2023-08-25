@@ -58,13 +58,15 @@ public class Player extends Entity{
         solidArea = new Rectangle();
         solidArea.x = 15;
         solidArea.y = 8;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
         solidArea.width = 18;
         solidArea.height = 32;
 
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        collisionOn = false;
+
+        direction = "right";
 
         getPlayerImage();
         
@@ -130,7 +132,7 @@ public class Player extends Entity{
 
             gp.cChecker.checkTile(this);
             objIndex = gp.cChecker.checkObject(this, true);
-            
+            System.out.println(collisionOn);
             pickUpObject(objIndex);
             worldX = collisionOn ? worldX : worldX + speed;
         }
