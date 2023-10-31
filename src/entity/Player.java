@@ -44,7 +44,6 @@ public class Player extends Entity{
     BufferedImage damageVisual;
     BufferedImage r_run1, r_run2, l_run1, l_run2, flip1, flip2, r_neutral, l_neutral;
 
-
     public Player(GamePanel gp, KeyHandler keyH) {
         
         super(gp);
@@ -125,7 +124,10 @@ public class Player extends Entity{
             objIndex = gp.cChecker.checkObject(this, true);
             
             pickUpObject(objIndex);
-            worldX = collisionOn ? worldX : worldX - speed;
+            // worldX = collisionOn ? worldX : worldX - speed;
+            if (!collisionOn && !gp.cChecker.checkObjectBool(this, true)) {
+                worldX -= speed;
+            }
         }
         if(keyH.rightPressed == true) {
             direction = "right";
@@ -134,7 +136,10 @@ public class Player extends Entity{
             objIndex = gp.cChecker.checkObject(this, true);
             System.out.println(collisionOn);
             pickUpObject(objIndex);
-            worldX = collisionOn ? worldX : worldX + speed;
+
+            if (!collisionOn && !gp.cChecker.checkObjectBool(this, true)) {
+                worldX += speed;
+            }
         }
 
         //Så att man inte kan hålla in för att konstant hoppa
@@ -153,7 +158,7 @@ public class Player extends Entity{
         
         //RÖRELSE NEDÅT (FALLA)
         //om man inte står på marken och inte hoppar uppåt så ska man falla
-        if (upSpeed <= 0) { 
+        if (upSpeed <= 0.0) { 
             collisionOn = false; 
             gp.cChecker.checkTileBelow(this, (int) accumulatedFallSpeed);
             objIndex = gp.cChecker.checkObject(this, true);

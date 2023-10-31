@@ -147,4 +147,14 @@ public class Entity{
             } 
         }
     }
+
+    public double getFallSpeed() {
+        System.out.println("Fall speed: " + this.accumulatedFallSpeed);
+        return this.accumulatedFallSpeed;
+    }
+
+    public double getUpSpeed() {
+        System.out.println("Up speed: " + this.upSpeed);
+        return this.upSpeed;
+    }
 }
